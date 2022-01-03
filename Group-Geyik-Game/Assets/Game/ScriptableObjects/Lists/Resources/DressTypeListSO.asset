@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5557b206d9958742aaf8d6b8a8466da, type: 3}
-  m_Name: Eye1
+  m_Script: {fileID: 11500000, guid: 36653a8354b3642498d911edfb8a5f59, type: 3}
+  m_Name: DressTypeListSO
   m_EditorClassIdentifier: 
-  color: {r: 0, g: 0.9696622, b: 1, a: 0}
-  colorHex: 00F7FF
-  image2D: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  dressTypeList:
+  - {fileID: 11400000, guid: 82cb0ddc6e4d89c46b23ea23c4192ee9, type: 2}
+  - {fileID: 11400000, guid: f910a9518194d71458c9dece7bee14fc, type: 2}

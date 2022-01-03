@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Objects/List/HairTypeList")]
 public class HairTypeListSO : ScriptableObject
 {
-    [SerializeField] private List<HairSO> hairTypeList;
+    public List<HairSO> list;
 }

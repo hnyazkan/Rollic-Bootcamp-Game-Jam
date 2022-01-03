@@ -102,18 +102,8 @@ public static class UtilsClass
     #endregion
 
     #region Colors
-    /// <summary>
-    /// Returns 0-255
-    /// </summary>
-    public static int Hex_to_Dec(string hex)
-    {
-        return Convert.ToInt32(hex, 16);
-    }
-    // Returns a float between 0->1
-    public static float Hex_to_Dec01(string hex)
-    {
-        return Hex_to_Dec(hex) / 255f;
-    }
+  
+   
     // Get Color from Hex string FF00FFAA
     public static Color GetColorFromString(string color)
     {
@@ -127,6 +117,18 @@ public static class UtilsClass
             alpha = Hex_to_Dec01(color.Substring(6, 2));
         }
         return new Color(red, green, blue, alpha);
+    }
+
+    // Returns a float between 0->1
+    public static float Hex_to_Dec01(string hex)
+    {
+        return Hex_to_Dec(hex) / 255f;
+    }
+
+    // Returns 0-255
+    public static int Hex_to_Dec(string hex)
+    {
+        return Convert.ToInt32(hex, 16);
     }
     #endregion
 

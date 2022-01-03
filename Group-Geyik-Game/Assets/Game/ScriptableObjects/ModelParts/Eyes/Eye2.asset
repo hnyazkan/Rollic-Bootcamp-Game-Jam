@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5557b206d9958742aaf8d6b8a8466da, type: 3}
   m_Name: Eye2
   m_EditorClassIdentifier: 
-  color: {r: 0, g: 0, b: 0, a: 0}
+  color: {r: 0.93872166, g: 0, b: 1, a: 0}
+  colorHex: F000FF
+  image2D: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
