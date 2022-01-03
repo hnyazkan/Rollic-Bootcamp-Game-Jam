@@ -11,6 +11,7 @@ public struct StringData
 
     //UI
     public const string BACKGROUND = "background";
+    public const string BAR = "bar";
     public const string TEXT = "text";
     public const string TEXT_ONE = "textOne";
     public const string TEXT_TWO = "textTwo";
