@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad96570dd3be7c34289e2cca6f2c6459, type: 3}
-  m_Name: Hair2
+  m_Name: Hair4
   m_EditorClassIdentifier: 
-  color: {r: 0.745283, g: 0.006480722, b: 0, a: 0}
-  colorHex: BE0200
+  color: {r: 0.26992625, g: 0, b: 0.8113208, a: 0}
+  colorHex: 4500CF
   sprite: {fileID: 21300000, guid: 65d738f0035e36940b78007763d3e408, type: 3}
   hairLength: 0

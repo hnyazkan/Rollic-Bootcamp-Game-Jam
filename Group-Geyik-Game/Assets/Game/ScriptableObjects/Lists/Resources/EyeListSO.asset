@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c094d21c315e5f6439ff0c53b6cf20d6, type: 3}
   m_Name: EyeListSO
   m_EditorClassIdentifier: 
-  list: []
+  list:
+  - {fileID: 11400000, guid: 23cfc04bd42adfe4f8c396f17b602ee6, type: 2}
+  - {fileID: 11400000, guid: 9180216e6b85a9c4c87b1aba17c67552, type: 2}
+  - {fileID: 11400000, guid: da3bbc1d2e9a46945b54e30f80eda4bc, type: 2}

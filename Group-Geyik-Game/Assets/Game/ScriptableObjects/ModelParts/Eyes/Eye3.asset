@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   color: {r: 0.7075472, g: 0.58909476, b: 0.14951937, a: 0}
   colorHex: B59727
-  image2D: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
