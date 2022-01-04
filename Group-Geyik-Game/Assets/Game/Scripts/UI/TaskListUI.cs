@@ -8,7 +8,7 @@ public class TaskListUI : MonoBehaviour
 {
     [SerializeField] private List<Transform> taskTransformList;
     
-    private Dictionary<int, string> stringDic; //partlarýn tamamen rastgele gelmesi için
+    private Dictionary<int, string> stringDic; //rastgele gelen partlarýn yazýlarýný tutmak için
 
     private const int maxDifferentPartType = 5; // lips, body, hair, eye, dress
     private const int maxTaskCount = 3;
