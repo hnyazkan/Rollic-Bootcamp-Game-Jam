@@ -7,9 +7,16 @@ public class HairSO : ScriptableObject
 {
     public Color color; //saç rengi
     public string colorHex; //saç rengi
+    public string colorName; // "red", "green", "blue"
+
     public Sprite sprite;   // UI ekraný için 2d resmi
-    public float hairLength; // ? saç uzunluðu koycak mýyýz belli deðil
 
+    //? saç uzunluðu koycak mýyýz belli deðil
+    public float hairLength;
 
+    public string GetRecipeText()
+    {
+        return $" <color=#{colorHex}>{colorName}</color> hair";
+    }
 
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Objects/Model/FullModel", order = -1)]
 public class ModelSO : ScriptableObject
 {
-    [SerializeField] BodySO body; //kýz, erkek
-    [SerializeField] HairSO hair;
-    [SerializeField] DressSO dress;
-    [SerializeField] EyeSO eye;
-    [SerializeField] LipsSO lips;
+    public BodySO body; //kýz, erkek
+    public HairSO hair;
+    public DressSO dress;
+    public EyeSO eye;
+    public LipsSO lips;
 }

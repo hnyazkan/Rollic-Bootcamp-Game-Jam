@@ -5,7 +5,15 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Objects/Model/Dress")]
 public class DressSO : ScriptableObject
 {
-    [SerializeField] private GameObject dressModel; // giysi tipi
-    [SerializeField] private Sprite image2D; // ? ui ekraný için 2d resmi
-    [SerializeField] private Color color;
+    public GameObject dressModel; // giysi tipi
+    public Sprite sprite; // UI ekraný için 2d resmi
+    
+    public Color color;
+    public string colorHex; 
+    public string colorName;
+    public string GetRecipeText()
+    {
+        return $" <color=#{colorHex}>{colorName}</color> Dress";
+    }
+
 }

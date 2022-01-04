@@ -5,5 +5,12 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Objects/Model/Lips")]
 public class LipsSO : ScriptableObject
 {
-    [SerializeField] private Color color; //dudak rengi
+    public Color color; //dudak rengi
+    public string colorHex;
+    public string colorName;
+
+    public string GetRecipeText()
+    {
+        return $" <color=#{colorHex}>{colorName}</color> Lips";
+    }
 }

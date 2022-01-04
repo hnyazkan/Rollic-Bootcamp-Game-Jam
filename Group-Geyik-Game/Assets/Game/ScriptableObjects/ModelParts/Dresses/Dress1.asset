@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: Dress1
   m_EditorClassIdentifier: 
   dressModel: {fileID: 0}
+  sprite: {fileID: 0}
   color: {r: 0.4245283, g: 0.14177641, b: 0.14177641, a: 1}
+  colorHex: 6C2424
+  colorName: Red

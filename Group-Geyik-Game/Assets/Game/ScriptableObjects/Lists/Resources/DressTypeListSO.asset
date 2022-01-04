@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36653a8354b3642498d911edfb8a5f59, type: 3}
   m_Name: DressTypeListSO
   m_EditorClassIdentifier: 
-  dressTypeList:
+  list:
   - {fileID: 11400000, guid: 82cb0ddc6e4d89c46b23ea23c4192ee9, type: 2}
   - {fileID: 11400000, guid: f910a9518194d71458c9dece7bee14fc, type: 2}

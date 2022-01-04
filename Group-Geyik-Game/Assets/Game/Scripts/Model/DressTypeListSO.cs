@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable Objects/List/DressTypeList")]
+[CreateAssetMenu(menuName = "Scriptable Objects/List/DressList")]
 public class DressTypeListSO : ScriptableObject
 {
-    [SerializeField] private List<DressSO> dressTypeList;
+    public List<DressSO> list;
 }
