@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: Eye2
   m_EditorClassIdentifier: 
   color: {r: 0.93872166, g: 0, b: 1, a: 0}
-  colorHex: EF00FF
-  colorName: Pinky
+  colorHex: F000FF
   sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}

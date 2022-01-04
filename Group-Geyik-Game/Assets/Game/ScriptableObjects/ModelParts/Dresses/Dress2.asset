@@ -13,7 +13,4 @@ MonoBehaviour:
   m_Name: Dress2
   m_EditorClassIdentifier: 
   dressModel: {fileID: 0}
-  sprite: {fileID: 0}
   color: {r: 0.7830189, g: 0.7279509, b: 0.12114626, a: 1}
-  colorHex: C8BA1F
-  colorName: Yellowish
