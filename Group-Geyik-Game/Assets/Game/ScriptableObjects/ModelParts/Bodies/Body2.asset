@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyType: {fileID: 0}
   color: {r: 0.6698113, g: 0.5600417, b: 0.38166606, a: 0}
+  colorHex: AB8F61
+  colorName: Brown
