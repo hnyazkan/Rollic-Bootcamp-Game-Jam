@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Lips1
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 0}
-  colorHex: White
-  colorName: FFFFFF
+  colorHex: FFFFFF
+  colorName: White

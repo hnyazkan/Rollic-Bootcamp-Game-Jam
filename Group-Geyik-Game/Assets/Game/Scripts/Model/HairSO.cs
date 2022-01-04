@@ -16,7 +16,7 @@ public class HairSO : ScriptableObject
 
     public string GetRecipeText()
     {
-        return $" <color=#{colorHex}>{colorName}</color> hair";
+        return $" <color=#{colorHex}>{colorName}</color> Hair";
     }
 
 }
