@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca8fba620c476cc41ae396947d1fa4ca, type: 3}
-  m_Name: Lips1
+  m_Name: Lips2
   m_EditorClassIdentifier: 
-  color: {r: 0.078604475, g: 0.4528302, b: 0.27751932, a: 0}
-  colorHex: 147347
-  colorName: Gran
+  color: {r: 0.0673371, g: 0.3679245, b: 0.3679245, a: 0}
+  colorHex: 125E5E
+  colorName: Blue
   sprite: {fileID: 21300000, guid: 638ed515564e05d40990253918e049d3, type: 3}
   taskSprite: {fileID: 21300000, guid: 3cf9f715895856f47a3f2ac890b9eb01, type: 3}

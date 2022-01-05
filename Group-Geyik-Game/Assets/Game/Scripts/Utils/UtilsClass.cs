@@ -102,8 +102,26 @@ public static class UtilsClass
     #endregion
 
     #region Colors
-  
-   
+
+    // Get Hex Color FF00FF
+    public static string GetStringFromColor(Color color)
+    {
+        string red = Dec01_to_Hex(color.r);
+        string green = Dec01_to_Hex(color.g);
+        string blue = Dec01_to_Hex(color.b);
+        return red + green + blue;
+    }
+    // Returns a hex string based on a number between 0->1
+    public static string Dec01_to_Hex(float value)
+    {
+        return Dec_to_Hex((int)Mathf.Round(value * 255f));
+    }
+    // Returns 00-FF, value 0->255
+    public static string Dec_to_Hex(int value)
+    {
+        return value.ToString("X2");
+    }
+
     // Get Color from Hex string FF00FFAA
     public static Color GetColorFromString(string color)
     {

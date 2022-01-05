@@ -20,8 +20,8 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        ReceiveAxisInputs();
-        ReceiveClickInputs();
+        //ReceiveAxisInputs();
+        //ReceiveClickInputs();
     }
 
     private void ReceiveClickInputs()

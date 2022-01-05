@@ -3,6 +3,8 @@ using NaughtyAttributes;
 
 public class ProgressBarUI : MonoBehaviour
 {
+    public static ProgressBarUI Instance { get; private set; }
+
     [SerializeField] private Transform heartOn;
     [SerializeField] private Transform heartOff;
 
@@ -15,6 +17,8 @@ public class ProgressBarUI : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
+
         barTransform = transform.Find(StringData.BAR);
         heartOn.gameObject.SetActive(false);
         heartOff.gameObject.SetActive(true);
@@ -41,7 +45,7 @@ public class ProgressBarUI : MonoBehaviour
     }
 
     [Button]
-    private void OneTaskDone()
+    public void OneTaskDone()
     {
         currentProgress += 1;
         UpdateProgressAmountNormalized();

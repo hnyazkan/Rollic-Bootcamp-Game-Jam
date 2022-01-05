@@ -10,11 +10,6 @@ using System;
 /// </summary>
 public class TaskListUI : MonoBehaviour
 {
-    public event EventHandler<OnTaskGeneratedEventArgs> OnTaskGenerated;
-    public class OnTaskGeneratedEventArgs : EventArgs
-    {
-        public List<int> list;
-    }
 
     //[SerializeField] private List<Transform> taskTransformList;
     [SerializeField] private List<Transform> imagePartList;
@@ -39,7 +34,6 @@ public class TaskListUI : MonoBehaviour
         SetDictionary();
         GetRandomRecipes();
     }
-
     private void SetDictionary()
     {
         //stringDic.Clear();
@@ -88,13 +82,14 @@ public class TaskListUI : MonoBehaviour
                     image.SetNativeSize();
 
                     //sprite color kutucuklarý belirlenir
-                    imagePartList[tempList.Count - 1].Find(StringData.IMAGECOLOR).GetComponent<Image>().color = 
+                    imagePartList[tempList.Count - 1].Find(StringData.IMAGECOLOR).GetComponent<Image>().color =
                         UtilsClass.GetColorFromString(colorDic[randomIndex]);
 
                     isAllTaskSlotsFilled = true;
                 }
             }
         }
+        ItemSelectUI.Instance.SetTaskParts(tempList);
         tempList.Clear();
     }
 

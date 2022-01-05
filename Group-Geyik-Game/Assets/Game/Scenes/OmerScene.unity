@@ -560,8 +560,8 @@ GameObject:
   - component: {fileID: 120965346}
   - component: {fileID: 120965349}
   - component: {fileID: 120965348}
-  - component: {fileID: 120965350}
   - component: {fileID: 120965347}
+  - component: {fileID: 120965350}
   m_Layer: 5
   m_Name: container-toDoList
   m_TagString: Untagged
@@ -676,10 +676,6 @@ MonoBehaviour:
   - {fileID: 2074473064}
   - {fileID: 1962297949}
   - {fileID: 1398880573}
-  partColorList:
-  - {fileID: 481160057}
-  - {fileID: 2066927238}
-  - {fileID: 1490484409}
 --- !u!1 &202563518
 GameObject:
   m_ObjectHideFlags: 0
@@ -4528,6 +4524,10 @@ MonoBehaviour:
   - {fileID: 2119214408}
   - {fileID: 446293552}
   - {fileID: 958125119}
+  taskList: {fileID: 120965350}
+  partOne: 0
+  indexTwo: 0
+  indexThree: 0
 --- !u!1 &1627494577
 GameObject:
   m_ObjectHideFlags: 0
