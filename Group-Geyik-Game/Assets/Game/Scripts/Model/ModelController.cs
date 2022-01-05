@@ -6,8 +6,8 @@ public class ModelController : MonoBehaviour
 {
     //public static ModelController Instance { get; private set; }
 
-    public ItemSelectUI ui;
-
+    [SerializeField] private ItemSelectUI ui;
+    
     [SerializeField] private List<Transform> hairList;
     [SerializeField] private Transform dress;
     [SerializeField] private Transform eye;
