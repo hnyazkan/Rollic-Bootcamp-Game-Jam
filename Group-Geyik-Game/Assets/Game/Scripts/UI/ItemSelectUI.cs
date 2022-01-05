@@ -3,12 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using NaughtyAttributes;
+using System;
 
 public class ItemSelectUI : MonoBehaviour
 {
     public static ItemSelectUI Instance { get; private set; }
 
-    [SerializeField] private List<Transform> itemList; // UI'daki 3 slot
+    public event EventHandler<OnHairColorChangedEventArgs> OnHairColorChanged;
+    public event EventHandler<OnDressColorChangedEventArgs> OnDressColorChanged;
+    public event EventHandler<OnBodyColorChangedEventArgs> OnBodyColorChanged;
+    public event EventHandler<OnLipColorChangedEventArgs> OnLipColorChanged;
+    public event EventHandler<OnEyeColorChangedEventArgs> OnEyeColorChanged;
+    public class OnLipColorChangedEventArgs : EventArgs
+    {
+       public string str;
+    }
+    public class OnHairColorChangedEventArgs : EventArgs
+    {
+        public string str;
+    }
+    public class OnDressColorChangedEventArgs : EventArgs
+    {
+        public string str;
+    }
+    public class OnBodyColorChangedEventArgs : EventArgs
+    {
+        public string str;
+    }
+    public class OnEyeColorChangedEventArgs : EventArgs
+    {
+        public string str;
+    }
+    [SerializeField] private List<Transform> itemList; // UI'daki 3 buton
 
     private HairTypeListSO hairList;
     private DressTypeListSO dressList;
@@ -23,6 +49,7 @@ public class ItemSelectUI : MonoBehaviour
 
     public void SetTaskParts(List<int> indexList)
     {
+        //indeksler 0'dan 4'e kadar
         taskPartOne = indexList[0]; // örn. saç indeksi neyse o olur
         taskPartTwo = indexList[1]; // örn. el indeksi neyse o olur
         taskPartThree = indexList[2]; // örn. vücut indeksi neyse o olur
@@ -39,6 +66,10 @@ public class ItemSelectUI : MonoBehaviour
     }
 
     [Button]
+    private void adff()
+    {
+        //ModelController.Instance.ChangeHairColor(RecipeManager.Instance.GetRecipedHair().color);
+    }
     private void GetFirstStage()
     {
         switch (taskPartOne)
@@ -134,7 +165,7 @@ public class ItemSelectUI : MonoBehaviour
                 GetThirdStage();
                 break;
             case 3:
-                Debug.Log("FIN");
+                AnimationManager.Instance.DeactivateInGameUI();
                 break;
         }
     }
@@ -161,6 +192,9 @@ public class ItemSelectUI : MonoBehaviour
                     transform.GetComponent<Button>().onClick.AddListener(() =>
                     {
                         Debug.Log("yanlýþ");
+                        //ModelController.Instance.ChangeHairColor(UtilsClass.GetStringFromColor(image.color));
+                        OnHairColorChanged?.Invoke(this, new OnHairColorChangedEventArgs { str = hairList.list[randomIndex].colorHex });
+                        //ModelController.Instance.ChangeHairColor(UtilsClass.GetColorFromString(hairList.list[randomIndex].colorHex));
                         CheckStage();
 
                     });
@@ -184,6 +218,9 @@ public class ItemSelectUI : MonoBehaviour
                 transform.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     Debug.Log("doru");
+                    //ModelController.Instance.ChangeHairColor(str);
+                    OnHairColorChanged?.Invoke(this, new OnHairColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedHair().colorHex });
+                    //ModelController.Instance.ChangeHairColor(UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedHair().colorHex));
                     ProgressBarUI.Instance.OneTaskDone();
                     CheckStage();
                 });
@@ -230,6 +267,7 @@ public class ItemSelectUI : MonoBehaviour
                     transform.GetComponent<Button>().onClick.AddListener(() =>
                     {
                         Debug.Log("yanlýþ");
+                        OnEyeColorChanged?.Invoke(this, new OnEyeColorChangedEventArgs { str = eyeList.list[randomIndex].colorHex });
                         CheckStage();
                     });
                     tempList.Add(randomIndex);
@@ -251,6 +289,7 @@ public class ItemSelectUI : MonoBehaviour
                 transform.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     Debug.Log("doru");
+                    OnEyeColorChanged?.Invoke(this, new OnEyeColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedEye().colorHex });
                     ProgressBarUI.Instance.OneTaskDone();
                     CheckStage();
                 });
@@ -293,6 +332,7 @@ public class ItemSelectUI : MonoBehaviour
                     transform.GetComponent<Button>().onClick.AddListener(() =>
                     {
                         Debug.Log("yanlýþ");
+                        OnDressColorChanged?.Invoke(this, new OnDressColorChangedEventArgs { str = dressList.list[randomIndex].colorHex });
                         CheckStage();
                     });
                     tempList.Add(randomIndex);
@@ -314,6 +354,7 @@ public class ItemSelectUI : MonoBehaviour
                 transform.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     Debug.Log("doru");
+                    OnDressColorChanged?.Invoke(this, new OnDressColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedDress().colorHex });
                     ProgressBarUI.Instance.OneTaskDone();
                     CheckStage();
                 });
@@ -356,6 +397,7 @@ public class ItemSelectUI : MonoBehaviour
                     transform.GetComponent<Button>().onClick.AddListener(() =>
                     {
                         Debug.Log("yanlýþ");
+                        OnBodyColorChanged?.Invoke(this, new OnBodyColorChangedEventArgs { str = bodyList.list[randomIndex].colorHex });
                         CheckStage();
                     });
                     tempList.Add(randomIndex);
@@ -376,6 +418,7 @@ public class ItemSelectUI : MonoBehaviour
                 transform.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     Debug.Log("doru");
+                    OnBodyColorChanged?.Invoke(this, new OnBodyColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedBody().colorHex });
                     ProgressBarUI.Instance.OneTaskDone();
                     CheckStage();
                 });
@@ -418,6 +461,7 @@ public class ItemSelectUI : MonoBehaviour
                     transform.GetComponent<Button>().onClick.AddListener(() =>
                     {
                         Debug.Log("yanlýþ");
+                        OnLipColorChanged?.Invoke(this, new OnLipColorChangedEventArgs { str = lipList.list[randomIndex].colorHex });
                         CheckStage();
                     });
                     tempList.Add(randomIndex);
@@ -438,6 +482,7 @@ public class ItemSelectUI : MonoBehaviour
                 transform.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     Debug.Log("doru");
+                    OnLipColorChanged?.Invoke(this, new OnLipColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedLips().colorHex });
                     ProgressBarUI.Instance.OneTaskDone();
                     CheckStage();
                 });
