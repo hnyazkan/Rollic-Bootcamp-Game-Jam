@@ -7,6 +7,6 @@ public class ModelControllerSettings : ScriptableObject
 {
     [SerializeField] private float voiceVolume = 1f;
 
-    public float VoiceVolumr => voiceVolume;
+    public float VoiceVolume => voiceVolume;
 }
 

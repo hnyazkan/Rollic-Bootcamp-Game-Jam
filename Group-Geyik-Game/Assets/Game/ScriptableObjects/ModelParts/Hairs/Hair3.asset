@@ -15,5 +15,5 @@ MonoBehaviour:
   color: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 0}
   colorHex: 6D6D6D
   colorName: Grey
-  sprite: {fileID: 21300000, guid: 65d738f0035e36940b78007763d3e408, type: 3}
-  hairLength: 0
+  sprite: {fileID: 21300000, guid: 451063981ce2da44c81d4cf8f50343dc, type: 3}
+  taskSprite: {fileID: 21300000, guid: 1db7344081724a14e88319b612f43ba2, type: 3}

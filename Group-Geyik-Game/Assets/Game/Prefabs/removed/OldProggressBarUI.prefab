@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 963718167896541392}
   - component: {fileID: 5007897917076014461}
   m_Layer: 5
-  m_Name: ProggressBarUI
+  m_Name: OldProggressBarUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -239,6 +239,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3de7c67ef5535b94fbd9bd2b25bab3d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  heartOn: {fileID: 0}
+  heartOff: {fileID: 0}
   lerpSpeed: 2
 --- !u!1 &2723913812518889427
 GameObject:

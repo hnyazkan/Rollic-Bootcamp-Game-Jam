@@ -11,7 +11,7 @@ public class ItemSelectUI : MonoBehaviour
     private HairTypeListSO hairList;
     private EyeListSO eyeList;
 
-    private const int maxItemCount = 3;
+    [ShowNonSerializedField] private const int maxItemCount = 3;
 
     private void Awake()
     {
@@ -49,7 +49,7 @@ public class ItemSelectUI : MonoBehaviour
         }
         tempList.Clear();
     }
-
+    
     [Button]
     private void GetEyes()
     {

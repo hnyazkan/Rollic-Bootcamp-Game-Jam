@@ -16,3 +16,5 @@ MonoBehaviour:
   color: {r: 0.9056604, g: 0.7429833, b: 0.4989676, a: 0}
   colorHex: E7BD7F
   colorName: Skin Color
+  sprite: {fileID: 21300000, guid: 5d04e9f2b7878b849a728af17997fefe, type: 3}
+  taskSprite: {fileID: 21300000, guid: 5d04e9f2b7878b849a728af17997fefe, type: 3}
