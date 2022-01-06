@@ -14,9 +14,12 @@ public class ItemSelectUI : MonoBehaviour
     public event EventHandler<OnBodyColorChangedEventArgs> OnBodyColorChanged;
     public event EventHandler<OnLipColorChangedEventArgs> OnLipColorChanged;
     public event EventHandler<OnEyeColorChangedEventArgs> OnEyeColorChanged;
+
+    public event EventHandler OnThreeStagesCompleted;
+
     public class OnLipColorChangedEventArgs : EventArgs
     {
-       public string str;
+        public string str;
     }
     public class OnHairColorChangedEventArgs : EventArgs
     {
@@ -62,71 +65,12 @@ public class ItemSelectUI : MonoBehaviour
     }
     private void Start()
     {
-        GetFirstStage();
+        GetStage(taskPartOne);
     }
 
-    [Button]
-    private void adff()
+    private void GetStage(int stage)
     {
-        //ModelController.Instance.ChangeHairColor(RecipeManager.Instance.GetRecipedHair().color);
-    }
-    private void GetFirstStage()
-    {
-        switch (taskPartOne)
-        {
-            case 0:
-                hairList = Resources.Load<HairTypeListSO>(typeof(HairTypeListSO).Name);
-                GetHairs(hairList);
-                break;
-            case 1:
-                eyeList = Resources.Load<EyeListSO>(typeof(EyeListSO).Name);
-                GetEyes(eyeList);
-                break;
-            case 2:
-                dressList = Resources.Load<DressTypeListSO>(typeof(DressTypeListSO).Name);
-                GetDresses(dressList);
-                break;
-            case 3:
-                bodyList = Resources.Load<BodyTypeListSO>(typeof(BodyTypeListSO).Name);
-                GetBodies(bodyList);
-                break;
-            case 4:
-                lipList = Resources.Load<LipListSO>(typeof(LipListSO).Name);
-                GetLips(lipList);
-                break;
-        }
-    }
-    [Button]
-    private void GetSecondStage()
-    {
-        switch (taskPartTwo)
-        {
-            case 0:
-                hairList = Resources.Load<HairTypeListSO>(typeof(HairTypeListSO).Name);
-                GetHairs(hairList);
-                break;
-            case 1:
-                eyeList = Resources.Load<EyeListSO>(typeof(EyeListSO).Name);
-                GetEyes(eyeList);
-                break;
-            case 2:
-                dressList = Resources.Load<DressTypeListSO>(typeof(DressTypeListSO).Name);
-                GetDresses(dressList);
-                break;
-            case 3:
-                bodyList = Resources.Load<BodyTypeListSO>(typeof(BodyTypeListSO).Name);
-                GetBodies(bodyList);
-                break;
-            case 4:
-                lipList = Resources.Load<LipListSO>(typeof(LipListSO).Name);
-                GetLips(lipList);
-                break;
-        }
-    }
-    [Button]
-    private void GetThirdStage()
-    {
-        switch (taskPartThree)
+        switch (stage)
         {
             case 0:
                 hairList = Resources.Load<HairTypeListSO>(typeof(HairTypeListSO).Name);
@@ -158,16 +102,22 @@ public class ItemSelectUI : MonoBehaviour
         {
             case 1:
                 stage++;
-                GetSecondStage();
+                GetStage(taskPartTwo);
                 break;
             case 2:
                 stage++;
-                GetThirdStage();
+                GetStage(taskPartThree);
                 break;
             case 3:
                 AnimationManager.Instance.DeactivateInGameUI();
+                Invoke("ThreeStagesCompleted", 3f);
                 break;
         }
+    }
+    private void ThreeStagesCompleted()
+    {
+        OnThreeStagesCompleted?.Invoke(this, EventArgs.Empty);
+        AnimationManager.Instance.ActivateInGameUI();
     }
 
     private void GetHairs(HairTypeListSO hairList)
@@ -175,26 +125,25 @@ public class ItemSelectUI : MonoBehaviour
         List<int> tempList = new List<int>();
         foreach (Transform transform in itemList)
         {
-            Image image = transform.Find(StringData.IMAGE).GetComponent<Image>();
             bool isAllItemSlotsFilled = maxItemCount == tempList.Count;
 
-            // Farklý saçlarýn farklý sýrada olacak þekilde UI'a dizilmesi. 
-            //3'ten fazla saç varsa sadece 3 tanesinin alýnmasý. Çýldýrdým yazarken
+            // Farklý saçlarýn farklý sýrada olacak þekilde UI'a dizilmesi. 3'ten fazla saç varsa sadece 3 tanesinin alýnmasý. Çýldýrdým yazarken
             while (!isAllItemSlotsFilled)
             {
                 int randomIndex = UnityEngine.Random.Range(0, hairList.list.Count);
 
                 if (!tempList.Contains(randomIndex))
                 {
+                    Image image = transform.Find(StringData.IMAGE).GetComponent<Image>();
                     image.sprite = hairList.list[randomIndex].sprite;
                     image.color = UtilsClass.GetColorFromString(hairList.list[randomIndex].colorHex);
+
+                    //butona týklama
                     transform.GetComponent<Button>().onClick.RemoveAllListeners();
                     transform.GetComponent<Button>().onClick.AddListener(() =>
                     {
                         Debug.Log("yanlýþ");
-                        //ModelController.Instance.ChangeHairColor(UtilsClass.GetStringFromColor(image.color));
                         OnHairColorChanged?.Invoke(this, new OnHairColorChangedEventArgs { str = hairList.list[randomIndex].colorHex });
-                        //ModelController.Instance.ChangeHairColor(UtilsClass.GetColorFromString(hairList.list[randomIndex].colorHex));
                         CheckStage();
 
                     });
@@ -203,38 +152,35 @@ public class ItemSelectUI : MonoBehaviour
                 }
             }
         }
-
         tempList.Clear();
 
-
-        //aradýðým renk oluþmuþ mu
-        bool shouldI = true;
+        bool shouldI = true; //butonlarda, task listteki istenen rengi oluþturmama gerek var mý
         foreach (Transform transform in itemList)
         {
+            //aradýðým renk zaten varsa
             if (RecipeManager.Instance.GetRecipedHair().colorHex == UtilsClass.GetStringFromColor(transform.Find(StringData.IMAGE).GetComponent<Image>().color))
             {
                 shouldI = false;
+
+                //halihazýrda varolan butona, týklayýnca nolcaðýný eklerim
                 transform.GetComponent<Button>().onClick.RemoveAllListeners();
                 transform.GetComponent<Button>().onClick.AddListener(() =>
                 {
                     Debug.Log("doru");
-                    //ModelController.Instance.ChangeHairColor(str);
                     OnHairColorChanged?.Invoke(this, new OnHairColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedHair().colorHex });
-                    //ModelController.Instance.ChangeHairColor(UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedHair().colorHex));
                     ProgressBarUI.Instance.OneTaskDone();
                     CheckStage();
                 });
             }
         }
+        //aradýðým renk oluþmamýþsa biz oluþtururuz.
         if (shouldI)
         {
-            //aradýðým renk oluþmamýþsa biz oluþtururuz
-            //basmamýz gereken renk.
             int itemListIndex = UnityEngine.Random.Range(0, 3);
-            Image imagee = itemList[itemListIndex].transform.Find(StringData.IMAGE).GetComponent<Image>();
+            Image image = itemList[itemListIndex].transform.Find(StringData.IMAGE).GetComponent<Image>();
 
-            imagee.sprite = RecipeManager.Instance.GetRecipedHair().sprite;
-            imagee.color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedHair().colorHex);
+            image.sprite = RecipeManager.Instance.GetRecipedHair().sprite;
+            image.color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedHair().colorHex);
 
             itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
             itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
@@ -505,4 +451,5 @@ public class ItemSelectUI : MonoBehaviour
             });
         }
     }
+
 }
