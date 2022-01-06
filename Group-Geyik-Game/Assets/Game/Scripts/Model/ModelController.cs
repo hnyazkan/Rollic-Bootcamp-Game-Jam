@@ -49,7 +49,8 @@ public class ModelController : MonoBehaviour
 
     private void Ui_OnHairColorChanged(object sender, ItemSelectUI.OnHairColorChangedEventArgs e)
     {
-        ChangeMultipleColor(UtilsClass.GetColorFromString(e.str), hair[hairIndex]);
+        //ChangeMultipleColor(UtilsClass.GetColorFromString(e.str), hair[hairIndex]);
+        ChangeColor(UtilsClass.GetColorFromString(e.str), hair[hairIndex]);
 
     }
     private void Ui_OnThreeStagesCompleted(object sender, System.EventArgs e)
