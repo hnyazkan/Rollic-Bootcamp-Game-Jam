@@ -20,8 +20,7 @@ public class ProgressBarUI : MonoBehaviour
         Instance = this;
 
         barTransform = transform.Find(StringData.BAR);
-        heartOn.gameObject.SetActive(false);
-        heartOff.gameObject.SetActive(true);
+        ResetBar();
     }
 
     private void Start()
@@ -48,6 +47,13 @@ public class ProgressBarUI : MonoBehaviour
     public void OneTaskDone()
     {
         currentProgress += 1;
+        UpdateProgressAmountNormalized();
+    }
+    public void ResetBar()
+    {
+        heartOn.gameObject.SetActive(false);
+        heartOff.gameObject.SetActive(true);
+        currentProgress = 0;
         UpdateProgressAmountNormalized();
     }
     private float UpdateProgressAmountNormalized()

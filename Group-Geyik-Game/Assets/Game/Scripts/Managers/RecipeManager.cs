@@ -30,7 +30,6 @@ public class RecipeManager : MonoBehaviour
         Instance = this;
 
         InitData();
-        CreateRandomRecipe();
     }
 
     private void InitData()
@@ -42,7 +41,7 @@ public class RecipeManager : MonoBehaviour
         bodyList = Resources.Load<BodyTypeListSO>(typeof(BodyTypeListSO).Name);
         lipList = Resources.Load<LipListSO>(typeof(LipListSO).Name);
     }
-    private void CreateRandomRecipe()
+    public void CreateRandomRecipeParts()
     {
         recipedHair = hairList.list[UnityEngine.Random.Range(0, hairList.list.Count)];
         recipedDress = dressList.list[UnityEngine.Random.Range(0, dressList.list.Count)];

@@ -16,5 +16,5 @@ MonoBehaviour:
   color: {r: 0.7830189, g: 0.7279509, b: 0.12114626, a: 1}
   colorHex: C8BA1F
   colorName: Yellowish
-  sprite: {fileID: 21300000, guid: 51c0a0a4cde7036478ee1aa580616ba6, type: 3}
+  sprite: {fileID: 21300000, guid: d225319d3cd237049841bcf26a7a8b00, type: 3}
   taskSprite: {fileID: 21300000, guid: 51c0a0a4cde7036478ee1aa580616ba6, type: 3}

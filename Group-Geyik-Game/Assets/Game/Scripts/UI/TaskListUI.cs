@@ -10,13 +10,13 @@ using System;
 /// </summary>
 public class TaskListUI : MonoBehaviour
 {
-
-    //[SerializeField] private List<Transform> taskTransformList;
+    public static TaskListUI Instance { get; private set; }
     [SerializeField] private List<Transform> imagePartList;
 
-    //private Dictionary<int, string> stringDic; //rastgele gelen partlarýn yazýlarýný tutmak için
     private Dictionary<int, Sprite> imageDic;
     private Dictionary<int, string> colorDic;
+
+    List<int> tempList = new List<int>();
 
     private const int maxDifferentPartType = 5; // lips, body, hair, eye, dress
 
@@ -24,25 +24,26 @@ public class TaskListUI : MonoBehaviour
 
     private void Awake()
     {
-        //stringDic = new Dictionary<int, string>();
+        Instance = this;
+
         imageDic = new Dictionary<int, Sprite>();
         colorDic = new Dictionary<int, string>();
 
         maxTaskCount = imagePartList.Count;
+        CreatRandomRecipe();
+    }
+
+    public void CreatRandomRecipe()
+    {
+        RecipeManager.Instance.CreateRandomRecipeParts();
         SetDictionaries();
         GetRandomRecipes();
     }
+
     private void SetDictionaries()
     {
-        //stringDic.Clear();
         imageDic.Clear();
         colorDic.Clear();
-
-        //stringDic[0] = RecipeManager.Instance.GetRecipedHair().GetRecipeText();
-        //stringDic[1] = RecipeManager.Instance.GetRecipedEye().GetRecipeText();
-        //stringDic[2] = RecipeManager.Instance.GetRecipedDress().GetRecipeText();
-        //stringDic[3] = RecipeManager.Instance.GetRecipedBody().GetRecipeText();
-        //stringDic[4] = RecipeManager.Instance.GetRecipedLips().GetRecipeText();
 
         imageDic[0] = RecipeManager.Instance.GetRecipedHair().taskSprite;
         imageDic[1] = RecipeManager.Instance.GetRecipedEye().taskSprite;
@@ -59,7 +60,7 @@ public class TaskListUI : MonoBehaviour
 
     private void GetRandomRecipes()
     {
-        List<int> tempList = new List<int>();
+        tempList.Clear();
         foreach (Transform transform in imagePartList)
         {
             bool isAllTaskSlotsFilled = maxTaskCount == tempList.Count;
@@ -70,7 +71,6 @@ public class TaskListUI : MonoBehaviour
                 if (!tempList.Contains(randomIndex))
                 {
                     tempList.Add(randomIndex);
-                    //taskTransformList[tempList.Count - 1].GetComponent<TextMeshProUGUI>().SetText(tempList.Count.ToString() + ")" + stringDic[randomIndex]);
 
                     //task bar sprite'lar setlenir
                     Image image = imagePartList[tempList.Count - 1].GetComponent<Image>();
@@ -85,10 +85,13 @@ public class TaskListUI : MonoBehaviour
                 }
             }
         }
-        ItemSelectUI.Instance.SetTaskParts(tempList);
-        tempList.Clear();
-    }
+        //ItemSelectUI.Instance.SetTaskParts(tempList);
 
+    }
+    public int GetTempList(int index)
+    {
+        return tempList[index];
+    }
 
 
 }
