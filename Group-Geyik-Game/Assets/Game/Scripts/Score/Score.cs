@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OutroUI : MonoBehaviour
+public class Score : MonoBehaviour
 {
     public static int stars = 3;
     public static int totalCoin;
@@ -12,5 +12,4 @@ public class OutroUI : MonoBehaviour
      * Score.stars--
      */
 
-   
 }
