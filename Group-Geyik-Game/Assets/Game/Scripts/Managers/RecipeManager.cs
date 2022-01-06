@@ -9,8 +9,6 @@ public class RecipeManager : MonoBehaviour
 {
     public static RecipeManager Instance { get; private set; }
 
-    //private Dictionary<HairTypeListSO, Transform> list;
-
     //istenen parçalar
     private HairSO recipedHair;
     private DressSO recipedDress;

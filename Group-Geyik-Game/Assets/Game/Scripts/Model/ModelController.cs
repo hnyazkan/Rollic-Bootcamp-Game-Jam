@@ -4,75 +4,90 @@ using UnityEngine;
 using NaughtyAttributes;
 public class ModelController : MonoBehaviour
 {
-    //public static ModelController Instance { get; private set; }
-
     [SerializeField] private ItemSelectUI ui;
-    
-    [SerializeField] private List<Transform> hairList;
-    [SerializeField] private Transform dress;
-    [SerializeField] private Transform eye;
-    [SerializeField] private Transform lip;
-    [SerializeField] private Transform body;
-    private void Awake()
-    {
-        //Instance = this;
-    }
+
+    [SerializeField] private Transform[] dress, eye, lip, body, hair;
+
+    private int dressIndex, eyeIndex, lipIndex, bodyIndex, hairIndex;
+
     private void Start()
+    {
+        InitObserver();
+        CreateNewCharacter();
+    }
+
+    private void InitObserver()
     {
         ui.OnHairColorChanged += Ui_OnHairColorChanged;
         ui.OnBodyColorChanged += Ui_OnBodyColorChanged;
         ui.OnDressColorChanged += Ui_OnDressColorChanged;
         ui.OnLipColorChanged += Ui_OnLipColorChanged;
         ui.OnEyeColorChanged += Ui_OnEyeColorChanged;
+        ui.OnThreeStagesCompleted += Ui_OnThreeStagesCompleted;
     }
 
+    #region Observer
     private void Ui_OnEyeColorChanged(object sender, ItemSelectUI.OnEyeColorChangedEventArgs e)
     {
-        ChangeEyesColor(UtilsClass.GetColorFromString(e.str));
+        ChangeColor(UtilsClass.GetColorFromString(e.str), eye[eyeIndex]);
     }
 
     private void Ui_OnLipColorChanged(object sender, ItemSelectUI.OnLipColorChangedEventArgs e)
     {
-        ChangeLipColor(UtilsClass.GetColorFromString(e.str));
+        ChangeColor(UtilsClass.GetColorFromString(e.str), lip[lipIndex]);
     }
 
     private void Ui_OnDressColorChanged(object sender, ItemSelectUI.OnDressColorChangedEventArgs e)
     {
-        ChangeDressColor(UtilsClass.GetColorFromString(e.str));
+        ChangeColor(UtilsClass.GetColorFromString(e.str), dress[dressIndex]);
     }
 
     private void Ui_OnBodyColorChanged(object sender, ItemSelectUI.OnBodyColorChangedEventArgs e)
     {
-        ChangeBodyColor(UtilsClass.GetColorFromString(e.str));
+        ChangeColor(UtilsClass.GetColorFromString(e.str), body[bodyIndex]);
     }
 
     private void Ui_OnHairColorChanged(object sender, ItemSelectUI.OnHairColorChangedEventArgs e)
     {
-        ChangeHairColor(UtilsClass.GetColorFromString(e.str));
+        ChangeMultipleColor(UtilsClass.GetColorFromString(e.str), hair[hairIndex]);
+
+    }
+    private void Ui_OnThreeStagesCompleted(object sender, System.EventArgs e)
+    {
+        CreateNewCharacter();
+    }
+    #endregion
+
+    [Button]
+    private void CreateNewCharacter()
+    {
+        CreateOnePart(dress, dressIndex);
+        CreateOnePart(eye, eyeIndex);
+        CreateOnePart(lip, lipIndex);
+        CreateOnePart(body, bodyIndex);
+        CreateOnePart(hair, hairIndex);
     }
 
-    public void ChangeHairColor(Color color)
+    private void CreateOnePart(Transform[] transformList, int index)
     {
-        foreach (Transform transform in hairList)
+        foreach (Transform transform in transformList)
         {
-            transform.GetComponent<MeshRenderer>().material.color = color;
+            transform.gameObject.SetActive(false);
         }
+
+        index = UnityEngine.Random.Range(0, transformList.Length);
+        transformList[index].transform.gameObject.SetActive(true);
     }
-    public void ChangeDressColor(Color color)
+    private void ChangeColor(Color color, Transform part)
     {
-        dress.GetComponent<MeshRenderer>().material.color = color;
+        part.GetComponent<SkinnedMeshRenderer>().material.color = color;
     }
-    public void ChangeEyesColor(Color color)
+    private void ChangeMultipleColor(Color color, Transform part)
     {
-        eye.GetComponent<MeshRenderer>().material.color = color;
-    }
-    public void ChangeBodyColor(Color color)
-    {
-        body.GetComponent<MeshRenderer>().material.color = color;
-    }
-    public void ChangeLipColor(Color color)
-    {
-        lip.GetComponent<MeshRenderer>().material.color = color;
+        foreach (Transform transform in part)
+        {
+            transform.GetComponentInChildren<SkinnedMeshRenderer>().material.color = color;
+        }
     }
 
 }

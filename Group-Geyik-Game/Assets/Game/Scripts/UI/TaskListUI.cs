@@ -17,7 +17,6 @@ public class TaskListUI : MonoBehaviour
     //private Dictionary<int, string> stringDic; //rastgele gelen partlarýn yazýlarýný tutmak için
     private Dictionary<int, Sprite> imageDic;
     private Dictionary<int, string> colorDic;
-    private List<int> dicIndexes;
 
     private const int maxDifferentPartType = 5; // lips, body, hair, eye, dress
 
@@ -28,18 +27,16 @@ public class TaskListUI : MonoBehaviour
         //stringDic = new Dictionary<int, string>();
         imageDic = new Dictionary<int, Sprite>();
         colorDic = new Dictionary<int, string>();
-        dicIndexes = new List<int>();
 
         maxTaskCount = imagePartList.Count;
-        SetDictionary();
+        SetDictionaries();
         GetRandomRecipes();
     }
-    private void SetDictionary()
+    private void SetDictionaries()
     {
         //stringDic.Clear();
         imageDic.Clear();
         colorDic.Clear();
-        dicIndexes.Clear();
 
         //stringDic[0] = RecipeManager.Instance.GetRecipedHair().GetRecipeText();
         //stringDic[1] = RecipeManager.Instance.GetRecipedEye().GetRecipeText();
@@ -73,7 +70,6 @@ public class TaskListUI : MonoBehaviour
                 if (!tempList.Contains(randomIndex))
                 {
                     tempList.Add(randomIndex);
-                    dicIndexes.Add(randomIndex);
                     //taskTransformList[tempList.Count - 1].GetComponent<TextMeshProUGUI>().SetText(tempList.Count.ToString() + ")" + stringDic[randomIndex]);
 
                     //task bar sprite'lar setlenir
