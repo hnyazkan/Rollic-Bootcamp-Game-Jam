@@ -9,6 +9,9 @@ public class ItemSelectUI : MonoBehaviour
 {
     public static ItemSelectUI Instance { get; private set; }
 
+    [SerializeField] private List<Transform> itemList; // UI'daki 3 buton
+
+    #region Observer
     public event EventHandler<OnHairColorChangedEventArgs> OnHairColorChanged;
     public event EventHandler<OnDressColorChangedEventArgs> OnDressColorChanged;
     public event EventHandler<OnBodyColorChangedEventArgs> OnBodyColorChanged;
@@ -37,7 +40,8 @@ public class ItemSelectUI : MonoBehaviour
     {
         public string str;
     }
-    [SerializeField] private List<Transform> itemList; // UI'daki 3 buton
+
+    #endregion
 
     private HairTypeListSO hairList;
     private DressTypeListSO dressList;
@@ -50,14 +54,6 @@ public class ItemSelectUI : MonoBehaviour
     private int taskPartOne, taskPartTwo, taskPartThree;
     private int stage = 1;
 
-    public void SetTaskParts(List<int> indexList)
-    {
-        //indeksler 0'dan 4'e kadar
-        taskPartOne = indexList[0]; // örn. saç indeksi neyse o olur
-        taskPartTwo = indexList[1]; // örn. el indeksi neyse o olur
-        taskPartThree = indexList[2]; // örn. vücut indeksi neyse o olur
-    }
-
     private void Awake()
     {
         Instance = this;
@@ -65,9 +61,16 @@ public class ItemSelectUI : MonoBehaviour
     }
     private void Start()
     {
+        SetTaskParts();
         GetStage(taskPartOne);
     }
-
+    private void SetTaskParts()
+    {
+        //indeksler 0'dan 4'e kadar
+        taskPartOne = TaskListUI.Instance.GetTempList(0);   //indexList[0]; // örn. saç indeksi neyse o olur
+        taskPartTwo = TaskListUI.Instance.GetTempList(1);   //indexList[1]; // örn. el indeksi neyse o olur
+        taskPartThree = TaskListUI.Instance.GetTempList(2); //= indexList[2]; // örn. vücut indeksi neyse o olur
+    }
     private void GetStage(int stage)
     {
         switch (stage)
@@ -110,14 +113,26 @@ public class ItemSelectUI : MonoBehaviour
                 break;
             case 3:
                 AnimationManager.Instance.DeactivateInGameUI();
-                Invoke("ThreeStagesCompleted", 3f);
+                Invoke(StringData.THREESTAGESCOMPLETED, 3f);
                 break;
         }
     }
     private void ThreeStagesCompleted()
     {
-        OnThreeStagesCompleted?.Invoke(this, EventArgs.Empty);
+        //progress bar'ý sýfýrla
+        ProgressBarUI.Instance.ResetBar();
+        //yeni tarif oluþtur
+        TaskListUI.Instance.CreatRandomRecipe();
+        // 3 aþamalý item seçmeyi 1'e geri çek
+        stage = 1;
+        //yeni tarif part datalarýný çek
+        SetTaskParts();
+        //Ýlk task'a göre UI'ý güncelle
+        GetStage(taskPartOne);
+        //UI animasyonu aktive olsun
         AnimationManager.Instance.ActivateInGameUI();
+        //event'i
+        OnThreeStagesCompleted?.Invoke(this, EventArgs.Empty);
     }
 
     private void GetHairs(HairTypeListSO hairList)

@@ -26,8 +26,11 @@ public struct StringData
     //public const string ACTIVATE_INGAMEUI = "activateInGameUI";
     //public const string ACTIVATE_WHEELUI = "activateWheelUI";
     //public const string ACTIVATE_OUTROUI = "activateOutroUI";
-    
+
     //SceneManagement
     public const string CURRENTLEVEL = "currentLevel";
+
+    //Invoke
+    public const string THREESTAGESCOMPLETED = "ThreeStagesCompleted";
 
 }
