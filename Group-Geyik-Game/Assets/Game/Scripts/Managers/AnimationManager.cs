@@ -8,6 +8,7 @@ public class AnimationManager : MonoBehaviour
     public static AnimationManager Instance { get; private set; }
 
     [SerializeField] private Animator inGameUI;
+    [SerializeField] private Animator failGameUI;
     [SerializeField] private Animator model;
 
     private void Awake()
@@ -34,6 +35,17 @@ public class AnimationManager : MonoBehaviour
     public void DeactivateDanceFemale()
     {
         model.SetBool(StringData.ISDANCING, false);
+    }
+
+    [Button]
+    public void ActivateFailGameUI()
+    {
+        failGameUI.SetBool(StringData.ISACTIVE, true);
+    }
+    [Button]
+    public void DeactivateFailGameUI()
+    {
+        failGameUI.SetBool(StringData.ISACTIVE, false);
     }
 
 }
