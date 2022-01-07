@@ -19,10 +19,7 @@ public class InputManager : MonoBehaviour
     private Vector3 prevPathPoint;
 
     public bool isDrag = false;
-    public GameObject dragingObj;
-    public Image dragSprite;
-    public Transform draggingObjectTransform;
-    public Vector3 dragingObjPos;
+    public Transform handTransform;
 
     public static bool IsClickingDown { get; private set; }
     public static bool IsClickingLeftDown { get; private set; }
@@ -74,65 +71,74 @@ public class InputManager : MonoBehaviour
     }
     private void HocaninKodu()
     {
-        draggingObjectTransform.position = GetMouseWorldPosition();
+        handTransform.position = Input.mousePosition;
+        handTransform.gameObject.SetActive(false);
 
-        if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && EventSystem.current.IsPointerOverGameObject() && dragingObj == null)
+        if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && EventSystem.current.IsPointerOverGameObject())
         {
             isDrag = true;
-            //dragSprite = EventSystem.current.gameObject.GetComponent<Sprite>();
+            if (handTransform.GetComponent<Image>().sprite == null)
+            {
+                //handTransform.GetComponent<Image>().sprite = ItemSelectUI.Instance.
+            handTransform.gameObject.SetActive(true);
+            }
+
         }
         if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
         {
             isDrag = false;
-            dragingObj = null;
-            dragSprite = null;
+            handTransform.GetComponent<Image>().sprite = null;
         }
-
-
-    }
-    private void MerveninKodu()
-    {
-        if (Input.touchCount > 0 && dragingObj == null) //ekranda bir dokunma algýlanmýþ ama sürüklenen obje bilgisini almamýþsak çalýþ demek.
+        if (isDrag)
         {
-            Debug.Log("dokandý");
-            for (int i = 0; i <= Input.touchCount; i++)
-            {
-                Touch touch = Input.GetTouch(i);
-                if (touch.phase == TouchPhase.Began)
-                {
-
-                    RaycastHit2D hit = Physics2D.Raycast(UtilsClass.GetScreenToWorldPosition(), Vector2.zero);
-                    if (hit.collider != null && hit.collider.tag == "dragingObject")//sürükülenebilir objelere bu tagý vermen gerekiyor. 
-                    {
-                        isDrag = true;
-                        dragingObj = hit.collider.gameObject; // burada dokunduðu objenin bilgisini alýyor
-                        dragingObjPos = dragingObj.transform.position;// burada da o objenin transform bilgisini alýyor.
-                    }
-                }
-                if (touch.phase == TouchPhase.Moved)
-                {
-                    if (isDrag)
-                    {
-                        dragingObjPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(i).position); // burasý objenin yerini dünya kordinatýna göre taþýmaný saðlýyor.
-                        dragingObjPos.z = 0;// z'yi sýfýrlamazsan saçma sapan yerlere gidip ekrandan çýkabiliyor.
-                    }
-                }
-                if (touch.phase == TouchPhase.Ended)
-                {
-                    isDrag = false;
-                    dragingObj = null;
-                }
-
-            }
-
+            handTransform.gameObject.SetActive(true);
         }
-    }
 
-    private void OnMouseDrag()//bu sadece unityde çalýþmasý için... Yukarýdaki kod unity içinde çalýþmýyor çünkü
-    {
-        dragingObjPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        dragingObjPos.z = 0;
 
     }
+    //private void MerveninKodu()
+    //{
+    //    if (Input.touchCount > 0 && dragingObj == null) //ekranda bir dokunma algýlanmýþ ama sürüklenen obje bilgisini almamýþsak çalýþ demek.
+    //    {
+    //        Debug.Log("dokandý");
+    //        for (int i = 0; i <= Input.touchCount; i++)
+    //        {
+    //            Touch touch = Input.GetTouch(i);
+    //            if (touch.phase == TouchPhase.Began)
+    //            {
+
+    //                RaycastHit2D hit = Physics2D.Raycast(UtilsClass.GetScreenToWorldPosition(), Vector2.zero);
+    //                if (hit.collider != null && hit.collider.tag == "dragingObject")//sürükülenebilir objelere bu tagý vermen gerekiyor. 
+    //                {
+    //                    isDrag = true;
+    //                    dragingObj = hit.collider.gameObject; // burada dokunduðu objenin bilgisini alýyor
+    //                    dragingObjPos = dragingObj.transform.position;// burada da o objenin transform bilgisini alýyor.
+    //                }
+    //            }
+    //            if (touch.phase == TouchPhase.Moved)
+    //            {
+    //                if (isDrag)
+    //                {
+    //                    dragingObjPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(i).position); // burasý objenin yerini dünya kordinatýna göre taþýmaný saðlýyor.
+    //                    dragingObjPos.z = 0;// z'yi sýfýrlamazsan saçma sapan yerlere gidip ekrandan çýkabiliyor.
+    //                }
+    //            }
+    //            if (touch.phase == TouchPhase.Ended)
+    //            {
+    //                isDrag = false;
+    //                dragingObj = null;
+    //            }
+
+    //        }
+
+    //    }
+    //}
+
+    //private void OnMouseDrag()//bu sadece unityde çalýþmasý için... Yukarýdaki kod unity içinde çalýþmýyor çünkü
+    //{
+    //    dragingObjPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    //    dragingObjPos.z = 0;
+
+    //}
 
 }

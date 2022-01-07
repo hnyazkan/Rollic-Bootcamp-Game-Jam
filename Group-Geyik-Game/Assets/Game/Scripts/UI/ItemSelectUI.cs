@@ -4,12 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using NaughtyAttributes;
 using System;
+using UnityEngine.EventSystems;
 
 public class ItemSelectUI : MonoBehaviour
 {
     public static ItemSelectUI Instance { get; private set; }
 
-    [SerializeField] private List<Transform> itemList; // UI'daki 3 buton
+    [SerializeField] private List<Transform> itemList; // UI'daki 5 buton
+    public Transform handTransform;
+
+    public bool isDrag = false;
 
     #region Observer
     public event EventHandler<OnHairColorChangedEventArgs> OnHairColorChanged;
@@ -64,6 +68,36 @@ public class ItemSelectUI : MonoBehaviour
         SetTaskParts();
         GetStage(taskPartOne);
     }
+    private void Update()
+    {
+        InputHandler();
+    }
+
+    private void InputHandler()
+    {
+        handTransform.position = Input.mousePosition;
+        handTransform.gameObject.SetActive(false);
+
+        if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && EventSystem.current.IsPointerOverGameObject())
+        {
+            isDrag = true;
+            if (handTransform.GetComponent<Image>().sprite == null)
+            {
+                handTransform.gameObject.SetActive(true);
+            }
+
+        }
+        if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
+        {
+            isDrag = false;
+            //handTransform.GetComponent<Image>().sprite = null;
+        }
+        if (isDrag)
+        {
+            handTransform.gameObject.SetActive(true);
+        }
+    }
+
     private void SetTaskParts()
     {
         //indeksler 0'dan 4'e kadar
@@ -136,7 +170,15 @@ public class ItemSelectUI : MonoBehaviour
                     image.sprite = hairList.list[randomIndex].sprite;
                     image.color = UtilsClass.GetColorFromString(hairList.list[randomIndex].colorHex);
 
-                    //butona týklama
+                    //butonun üzerine gelme
+                    PointerEvents pointerEvents = transform.GetComponent<PointerEvents>();
+                    pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
+                    {
+                        handTransform.GetComponent<Image>().sprite = image.sprite;
+                        handTransform.GetComponent<Image>().color = image.color;
+                    };
+
+                    //butona týklama hepsine false atarýz
                     transform.GetComponent<Button>().onClick.RemoveAllListeners();
                     transform.GetComponent<Button>().onClick.AddListener(() =>
                     {
@@ -161,7 +203,7 @@ public class ItemSelectUI : MonoBehaviour
         bool shouldI = true; //butonlarda, task listteki istenen rengi oluþturmama gerek var mý
         foreach (Transform transform in itemList)
         {
-            //aradýðým renk zaten varsa
+            //aradýðým renk zaten varsa butona týklayýncaki negatif özelliðini kaldýrýrýz
             if (RecipeManager.Instance.GetRecipedHair().colorHex == UtilsClass.GetStringFromColor(transform.Find(StringData.IMAGE).GetComponent<Image>().color))
             {
                 shouldI = false;
@@ -186,10 +228,14 @@ public class ItemSelectUI : MonoBehaviour
         if (shouldI)
         {
             int itemListIndex = UnityEngine.Random.Range(0, 3);
-            Image image = itemList[itemListIndex].transform.Find(StringData.IMAGE).GetComponent<Image>();
 
-            image.sprite = RecipeManager.Instance.GetRecipedHair().sprite;
-            image.color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedHair().colorHex);
+            //butonun üzerine gelme
+            PointerEvents pointerEvents = itemList[itemListIndex].GetComponent<PointerEvents>();
+            pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
+            {
+                handTransform.GetComponent<Image>().sprite = RecipeManager.Instance.GetRecipedHair().sprite;
+                handTransform.GetComponent<Image>().color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedHair().colorHex);
+            };
 
             itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
             itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
@@ -206,6 +252,7 @@ public class ItemSelectUI : MonoBehaviour
         }
 
     }
+
     private void GetEyes(EyeListSO eyeList)
     {
         List<int> tempList = new List<int>();
@@ -223,6 +270,14 @@ public class ItemSelectUI : MonoBehaviour
                 {
                     image.sprite = eyeList.list[randomIndex].sprite;
                     image.color = UtilsClass.GetColorFromString(eyeList.list[randomIndex].colorHex);
+
+                    //butonun üzerine gelme
+                    PointerEvents pointerEvents = transform.GetComponent<PointerEvents>();
+                    pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
+                    {
+                        handTransform.GetComponent<Image>().sprite = image.sprite;
+                        handTransform.GetComponent<Image>().color = image.color;
+                    };
                     transform.GetComponent<Button>().onClick.RemoveAllListeners();
                     transform.GetComponent<Button>().onClick.AddListener(() =>
                     {
@@ -250,6 +305,8 @@ public class ItemSelectUI : MonoBehaviour
             if (RecipeManager.Instance.GetRecipedEye().colorHex == UtilsClass.GetStringFromColor(transform.Find(StringData.IMAGE).GetComponent<Image>().color))
             {
                 shouldI = false;
+
+                //butona týklama
                 transform.GetComponent<Button>().onClick.RemoveAllListeners();
                 transform.GetComponent<Button>().onClick.AddListener(() =>
                 {
@@ -268,10 +325,18 @@ public class ItemSelectUI : MonoBehaviour
         if (shouldI)
         {
             int itemListIndex = UnityEngine.Random.Range(0, 3);
-            Image imagee = itemList[itemListIndex].transform.Find(StringData.IMAGE).GetComponent<Image>();
+            //Image imagee = itemList[itemListIndex].transform.Find(StringData.IMAGE).GetComponent<Image>();
 
-            imagee.sprite = RecipeManager.Instance.GetRecipedEye().sprite;
-            imagee.color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedEye().colorHex);
+            //imagee.sprite = RecipeManager.Instance.GetRecipedEye().sprite;
+            //imagee.color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedEye().colorHex);
+
+            //butonun üzerine gelme
+            PointerEvents pointerEvents = itemList[itemListIndex].GetComponent<PointerEvents>();
+            pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
+            {
+                handTransform.GetComponent<Image>().sprite = RecipeManager.Instance.GetRecipedEye().sprite;
+                handTransform.GetComponent<Image>().color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedEye().colorHex);
+            };
 
             itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
             itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
@@ -303,6 +368,14 @@ public class ItemSelectUI : MonoBehaviour
                 {
                     image.sprite = dressList.list[randomIndex].sprite;
                     image.color = UtilsClass.GetColorFromString(dressList.list[randomIndex].colorHex);
+
+                    //butonun üzerine gelme
+                    PointerEvents pointerEvents = transform.GetComponent<PointerEvents>();
+                    pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
+                    {
+                        handTransform.GetComponent<Image>().sprite = image.sprite;
+                        handTransform.GetComponent<Image>().color = image.color;
+                    };
                     transform.GetComponent<Button>().onClick.RemoveAllListeners();
                     transform.GetComponent<Button>().onClick.AddListener(() =>
                     {
@@ -330,6 +403,8 @@ public class ItemSelectUI : MonoBehaviour
             if (RecipeManager.Instance.GetRecipedDress().colorHex == UtilsClass.GetStringFromColor(transform.Find(StringData.IMAGE).GetComponent<Image>().color))
             {
                 shouldI = false;
+
+                //butona týklama
                 transform.GetComponent<Button>().onClick.RemoveAllListeners();
                 transform.GetComponent<Button>().onClick.AddListener(() =>
                 {
@@ -348,10 +423,14 @@ public class ItemSelectUI : MonoBehaviour
         if (shouldI)
         {
             int itemListIndex = UnityEngine.Random.Range(0, 3);
-            Image imagee = itemList[itemListIndex].transform.Find(StringData.IMAGE).GetComponent<Image>();
 
-            imagee.sprite = RecipeManager.Instance.GetRecipedDress().sprite;
-            imagee.color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedDress().colorHex);
+            //butonun üzerine gelme
+            PointerEvents pointerEvents = itemList[itemListIndex].GetComponent<PointerEvents>();
+            pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
+            {
+                handTransform.GetComponent<Image>().sprite = RecipeManager.Instance.GetRecipedDress().sprite;
+                handTransform.GetComponent<Image>().color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedDress().colorHex);
+            };
 
             itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
             itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
@@ -383,6 +462,14 @@ public class ItemSelectUI : MonoBehaviour
                 {
                     image.sprite = bodyList.list[randomIndex].sprite;
                     image.color = UtilsClass.GetColorFromString(bodyList.list[randomIndex].colorHex);
+
+                    //butonun üzerine gelme
+                    PointerEvents pointerEvents = transform.GetComponent<PointerEvents>();
+                    pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
+                    {
+                        handTransform.GetComponent<Image>().sprite = image.sprite;
+                        handTransform.GetComponent<Image>().color = image.color;
+                    };
                     transform.GetComponent<Button>().onClick.RemoveAllListeners();
                     transform.GetComponent<Button>().onClick.AddListener(() =>
                     {
@@ -409,6 +496,8 @@ public class ItemSelectUI : MonoBehaviour
             if (RecipeManager.Instance.GetRecipedBody().colorHex == UtilsClass.GetStringFromColor(transform.Find(StringData.IMAGE).GetComponent<Image>().color))
             {
                 shouldI = false;
+
+                //butona týklama
                 transform.GetComponent<Button>().onClick.RemoveAllListeners();
                 transform.GetComponent<Button>().onClick.AddListener(() =>
                 {
@@ -427,10 +516,14 @@ public class ItemSelectUI : MonoBehaviour
         if (shouldI)
         {
             int itemListIndex = UnityEngine.Random.Range(0, 3);
-            Image imagee = itemList[itemListIndex].transform.Find(StringData.IMAGE).GetComponent<Image>();
 
-            imagee.sprite = RecipeManager.Instance.GetRecipedBody().sprite;
-            imagee.color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedBody().colorHex);
+            //butonun üzerine gelme
+            PointerEvents pointerEvents = itemList[itemListIndex].GetComponent<PointerEvents>();
+            pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
+            {
+                handTransform.GetComponent<Image>().sprite = RecipeManager.Instance.GetRecipedBody().sprite;
+                handTransform.GetComponent<Image>().color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedBody().colorHex);
+            };
 
             itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
             itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
@@ -462,6 +555,14 @@ public class ItemSelectUI : MonoBehaviour
                 {
                     image.sprite = lipList.list[randomIndex].sprite;
                     image.color = UtilsClass.GetColorFromString(lipList.list[randomIndex].colorHex);
+
+                    //butonun üzerine gelme
+                    PointerEvents pointerEvents = transform.GetComponent<PointerEvents>();
+                    pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
+                    {
+                        handTransform.GetComponent<Image>().sprite = image.sprite;
+                        handTransform.GetComponent<Image>().color = image.color;
+                    };
                     transform.GetComponent<Button>().onClick.RemoveAllListeners();
                     transform.GetComponent<Button>().onClick.AddListener(() =>
                     {
@@ -488,6 +589,8 @@ public class ItemSelectUI : MonoBehaviour
             if (RecipeManager.Instance.GetRecipedLips().colorHex == UtilsClass.GetStringFromColor(transform.Find(StringData.IMAGE).GetComponent<Image>().color))
             {
                 shouldI = false;
+
+                //butona týklama
                 transform.GetComponent<Button>().onClick.RemoveAllListeners();
                 transform.GetComponent<Button>().onClick.AddListener(() =>
                 {
@@ -506,10 +609,14 @@ public class ItemSelectUI : MonoBehaviour
         if (shouldI)
         {
             int itemListIndex = UnityEngine.Random.Range(0, 3);
-            Image imagee = itemList[itemListIndex].transform.Find(StringData.IMAGE).GetComponent<Image>();
 
-            imagee.sprite = RecipeManager.Instance.GetRecipedLips().sprite;
-            imagee.color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedLips().colorHex);
+            //butonun üzerine gelme
+            PointerEvents pointerEvents = itemList[itemListIndex].GetComponent<PointerEvents>();
+            pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
+            {
+                handTransform.GetComponent<Image>().sprite = RecipeManager.Instance.GetRecipedLips().sprite;
+                handTransform.GetComponent<Image>().color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedLips().colorHex);
+            };
 
             itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
             itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
@@ -525,8 +632,8 @@ public class ItemSelectUI : MonoBehaviour
             });
         }
     }
-    
-   private IEnumerator WheelTime()
+
+    private IEnumerator WheelTime()
     {
         Debug.Log("çark.exe çalýþtý");
         yield return new WaitForSeconds(5f);
@@ -552,7 +659,7 @@ public class ItemSelectUI : MonoBehaviour
         AnimationManager.Instance.ActivateInGameUI();
         //event'i
         OnThreeStagesCompleted?.Invoke(this, EventArgs.Empty);
-        
+
         Debug.Log("end game bitti");
     }
 }
