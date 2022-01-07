@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class Score : MonoBehaviour
 {
+    public static Score Instance { get; private set; }
+    
     public static int stars = 3;
     public static int totalCoin = 0;
 
+    private void Awake()
+    {
+        Instance = this;
+    } 
+
+  
     /*
      * Nerede player yanlýþ seçim yaparsa star sayýsýný azalt.
      * Score.stars--
