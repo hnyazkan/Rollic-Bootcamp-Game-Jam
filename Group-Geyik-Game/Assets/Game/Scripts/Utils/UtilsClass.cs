@@ -61,14 +61,7 @@ public static class UtilsClass
         mouseVector.z = posZ;
         return mouseVector;
     }
-    public static Vector3 GetMouseWorldPosition()
-    {
-        if (mainCamera == null) mainCamera = Camera.main;
-        Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        mouseWorldPos.y -= 2.3f;
-        mouseWorldPos.z = -3f;
-        return mouseWorldPos;
-    }
+
     /// <summary>
     /// ok atarken gideceği yön vektörünü bulmak için
     /// </summary>

@@ -47,6 +47,10 @@ public class ProgressBarUI : MonoBehaviour
     public void OneTaskDone()
     {
         currentProgress += 1;
+        if (currentProgress == maxProgress)
+        {
+            AnimationManager.Instance.ActivateDanceFemale();
+        }
         UpdateProgressAmountNormalized();
     }
     public void ResetBar()
@@ -54,6 +58,7 @@ public class ProgressBarUI : MonoBehaviour
         heartOn.gameObject.SetActive(false);
         heartOff.gameObject.SetActive(true);
         currentProgress = 0;
+        AnimationManager.Instance.DeactivateDanceFemale();
         UpdateProgressAmountNormalized();
     }
     private float UpdateProgressAmountNormalized()

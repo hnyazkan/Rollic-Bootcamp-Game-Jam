@@ -51,8 +51,8 @@ public class ItemSelectUI : MonoBehaviour
 
     [ShowNonSerializedField] private const int maxItemCount = 5;
 
-    private int taskPartOne, taskPartTwo, taskPartThree;
-    private int stage = 1;
+    private int taskPartOne, taskPartTwo, taskPartThree; //task manager'dan gelen saç mý göz mü onlar
+    private int stage = 1; //item seçme aþamasý toplam 3 kere
 
     private void Awake()
     {
@@ -113,26 +113,9 @@ public class ItemSelectUI : MonoBehaviour
                 break;
             case 3:
                 AnimationManager.Instance.DeactivateInGameUI();
-                Invoke(StringData.THREESTAGESCOMPLETED, 3f);
+                StartCoroutine(ThreeStagesCompleted());
                 break;
         }
-    }
-    private void ThreeStagesCompleted()
-    {
-        //progress bar'ý sýfýrla
-        ProgressBarUI.Instance.ResetBar();
-        //yeni tarif oluþtur
-        TaskListUI.Instance.CreatRandomRecipe();
-        // 3 aþamalý item seçmeyi 1'e geri çek
-        stage = 1;
-        //yeni tarif part datalarýný çek
-        SetTaskParts();
-        //Ýlk task'a göre UI'ý güncelle
-        GetStage(taskPartOne);
-        //UI animasyonu aktive olsun
-        AnimationManager.Instance.ActivateInGameUI();
-        //event'i
-        OnThreeStagesCompleted?.Invoke(this, EventArgs.Empty);
     }
 
     private void GetHairs(HairTypeListSO hairList)
@@ -157,7 +140,13 @@ public class ItemSelectUI : MonoBehaviour
                     transform.GetComponent<Button>().onClick.RemoveAllListeners();
                     transform.GetComponent<Button>().onClick.AddListener(() =>
                     {
+                        if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                        {
+
+                            StartCoroutine(WheelTime());
+                        }
                         Debug.Log("yanlýþ");
+                        TaskListUI.Instance.SetActiveXMark(stage - 1);
                         OnHairColorChanged?.Invoke(this, new OnHairColorChangedEventArgs { str = hairList.list[randomIndex].colorHex });
                         CheckStage();
 
@@ -181,6 +170,10 @@ public class ItemSelectUI : MonoBehaviour
                 transform.GetComponent<Button>().onClick.RemoveAllListeners();
                 transform.GetComponent<Button>().onClick.AddListener(() =>
                 {
+                    if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                    {
+                        StartCoroutine(WheelTime());
+                    }
                     Debug.Log("doru");
                     OnHairColorChanged?.Invoke(this, new OnHairColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedHair().colorHex });
                     ProgressBarUI.Instance.OneTaskDone();
@@ -201,6 +194,10 @@ public class ItemSelectUI : MonoBehaviour
             itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
             itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
             {
+                if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                {
+                    StartCoroutine(WheelTime());
+                }
                 Debug.Log("doru");
                 ProgressBarUI.Instance.OneTaskDone();
                 TaskListUI.Instance.SetActiveTick(stage - 1);
@@ -229,7 +226,12 @@ public class ItemSelectUI : MonoBehaviour
                     transform.GetComponent<Button>().onClick.RemoveAllListeners();
                     transform.GetComponent<Button>().onClick.AddListener(() =>
                     {
+                        if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                        {
+                            StartCoroutine(WheelTime());
+                        }
                         Debug.Log("yanlýþ");
+                        TaskListUI.Instance.SetActiveXMark(stage - 1);
                         OnEyeColorChanged?.Invoke(this, new OnEyeColorChangedEventArgs { str = eyeList.list[randomIndex].colorHex });
                         CheckStage();
                     });
@@ -251,6 +253,10 @@ public class ItemSelectUI : MonoBehaviour
                 transform.GetComponent<Button>().onClick.RemoveAllListeners();
                 transform.GetComponent<Button>().onClick.AddListener(() =>
                 {
+                    if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                    {
+                        StartCoroutine(WheelTime());
+                    }
                     Debug.Log("doru");
                     OnEyeColorChanged?.Invoke(this, new OnEyeColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedEye().colorHex });
                     ProgressBarUI.Instance.OneTaskDone();
@@ -270,6 +276,10 @@ public class ItemSelectUI : MonoBehaviour
             itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
             itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
             {
+                if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                {
+                    StartCoroutine(WheelTime());
+                }
                 Debug.Log("doru");
                 ProgressBarUI.Instance.OneTaskDone();
                 TaskListUI.Instance.SetActiveTick(stage - 1);
@@ -296,7 +306,12 @@ public class ItemSelectUI : MonoBehaviour
                     transform.GetComponent<Button>().onClick.RemoveAllListeners();
                     transform.GetComponent<Button>().onClick.AddListener(() =>
                     {
+                        if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                        {
+                            StartCoroutine(WheelTime());
+                        }
                         Debug.Log("yanlýþ");
+                        TaskListUI.Instance.SetActiveXMark(stage - 1);
                         OnDressColorChanged?.Invoke(this, new OnDressColorChangedEventArgs { str = dressList.list[randomIndex].colorHex });
                         CheckStage();
                     });
@@ -318,6 +333,10 @@ public class ItemSelectUI : MonoBehaviour
                 transform.GetComponent<Button>().onClick.RemoveAllListeners();
                 transform.GetComponent<Button>().onClick.AddListener(() =>
                 {
+                    if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                    {
+                        StartCoroutine(WheelTime());
+                    }
                     Debug.Log("doru");
                     OnDressColorChanged?.Invoke(this, new OnDressColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedDress().colorHex });
                     ProgressBarUI.Instance.OneTaskDone();
@@ -337,6 +356,10 @@ public class ItemSelectUI : MonoBehaviour
             itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
             itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
             {
+                if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                {
+                    StartCoroutine(WheelTime());
+                }
                 Debug.Log("doru");
                 ProgressBarUI.Instance.OneTaskDone();
                 TaskListUI.Instance.SetActiveTick(stage - 1);
@@ -363,7 +386,12 @@ public class ItemSelectUI : MonoBehaviour
                     transform.GetComponent<Button>().onClick.RemoveAllListeners();
                     transform.GetComponent<Button>().onClick.AddListener(() =>
                     {
+                        if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                        {
+                            StartCoroutine(WheelTime());
+                        }
                         Debug.Log("yanlýþ");
+                        TaskListUI.Instance.SetActiveXMark(stage - 1);
                         OnBodyColorChanged?.Invoke(this, new OnBodyColorChangedEventArgs { str = bodyList.list[randomIndex].colorHex });
                         CheckStage();
                     });
@@ -384,6 +412,10 @@ public class ItemSelectUI : MonoBehaviour
                 transform.GetComponent<Button>().onClick.RemoveAllListeners();
                 transform.GetComponent<Button>().onClick.AddListener(() =>
                 {
+                    if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                    {
+                        StartCoroutine(WheelTime());
+                    }
                     Debug.Log("doru");
                     OnBodyColorChanged?.Invoke(this, new OnBodyColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedBody().colorHex });
                     ProgressBarUI.Instance.OneTaskDone();
@@ -403,6 +435,10 @@ public class ItemSelectUI : MonoBehaviour
             itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
             itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
             {
+                if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                {
+                    StartCoroutine(WheelTime());
+                }
                 Debug.Log("doru");
                 ProgressBarUI.Instance.OneTaskDone();
                 TaskListUI.Instance.SetActiveTick(stage - 1);
@@ -429,7 +465,12 @@ public class ItemSelectUI : MonoBehaviour
                     transform.GetComponent<Button>().onClick.RemoveAllListeners();
                     transform.GetComponent<Button>().onClick.AddListener(() =>
                     {
+                        if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                        {
+                            StartCoroutine(WheelTime());
+                        }
                         Debug.Log("yanlýþ");
+                        TaskListUI.Instance.SetActiveXMark(stage - 1);
                         OnLipColorChanged?.Invoke(this, new OnLipColorChangedEventArgs { str = lipList.list[randomIndex].colorHex });
                         CheckStage();
                     });
@@ -450,6 +491,10 @@ public class ItemSelectUI : MonoBehaviour
                 transform.GetComponent<Button>().onClick.RemoveAllListeners();
                 transform.GetComponent<Button>().onClick.AddListener(() =>
                 {
+                    if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                    {
+                        StartCoroutine(WheelTime());
+                    }
                     Debug.Log("doru");
                     OnLipColorChanged?.Invoke(this, new OnLipColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedLips().colorHex });
                     ProgressBarUI.Instance.OneTaskDone();
@@ -469,6 +514,10 @@ public class ItemSelectUI : MonoBehaviour
             itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
             itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
             {
+                if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                {
+                    StartCoroutine(WheelTime());
+                }
                 Debug.Log("doru");
                 ProgressBarUI.Instance.OneTaskDone();
                 TaskListUI.Instance.SetActiveTick(stage - 1);
@@ -476,5 +525,34 @@ public class ItemSelectUI : MonoBehaviour
             });
         }
     }
+    
+   private IEnumerator WheelTime()
+    {
+        Debug.Log("çark.exe çalýþtý");
+        yield return new WaitForSeconds(5f);
+        Debug.Log("çark bitti");
+    }
+    private IEnumerator ThreeStagesCompleted()
+    {
+        //kazanma ekraný bekleme sekansý
 
+        yield return new WaitForSeconds(4f);
+
+        //progress bar'ý sýfýrla
+        ProgressBarUI.Instance.ResetBar();
+        //yeni tarif oluþtur
+        TaskListUI.Instance.CreatRandomRecipe();
+        // 3 aþamalý item seçmeyi 1'e geri çek
+        stage = 1;
+        //yeni tarif part datalarýný çek
+        SetTaskParts();
+        //Ýlk task'a göre UI'ý güncelle
+        GetStage(taskPartOne);
+        //UI animasyonu aktive olsun
+        AnimationManager.Instance.ActivateInGameUI();
+        //event'i
+        OnThreeStagesCompleted?.Invoke(this, EventArgs.Empty);
+        
+        Debug.Log("end game bitti");
+    }
 }

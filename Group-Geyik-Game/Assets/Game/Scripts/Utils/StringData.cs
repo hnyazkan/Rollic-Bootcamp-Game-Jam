@@ -21,6 +21,7 @@ public struct StringData
 
     //Animator
     public const string ISACTIVE = "isActive";
+    public const string ISDANCING = "isDancing";
 
     //public const string ACTIVATE_INTROUI = "activateIntroUI";
     //public const string ACTIVATE_INGAMEUI = "activateInGameUI";
@@ -32,5 +33,6 @@ public struct StringData
 
     //Invoke
     public const string THREESTAGESCOMPLETED = "ThreeStagesCompleted";
+    public const string WAITEQUALTOWHEELTIME = "WaitEqualToWheelTime";
 
 }

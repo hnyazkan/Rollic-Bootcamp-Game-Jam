@@ -13,11 +13,14 @@ public class TaskListUI : MonoBehaviour
     public static TaskListUI Instance { get; private set; }
     [SerializeField] private List<Transform> imagePartList;
     [SerializeField] private List<Transform> tickImageList;
+    [SerializeField] private List<Transform> xMarkImageList;
+    [SerializeField] private List<Transform> questionMarkList;
 
     private Dictionary<int, Sprite> imageDic;
     private Dictionary<int, string> colorDic;
 
-    List<int> tempList = new List<int>();
+    private List<int> tempList;
+    private Dictionary<int, bool> tempQuestionMarkDic;
 
     private const int maxDifferentPartType = 5; // lips, body, hair, eye, dress
 
@@ -29,6 +32,8 @@ public class TaskListUI : MonoBehaviour
 
         imageDic = new Dictionary<int, Sprite>();
         colorDic = new Dictionary<int, string>();
+        tempList = new List<int>();
+        tempQuestionMarkDic = new Dictionary<int, bool>();
 
         maxTaskCount = imagePartList.Count;
         CreatRandomRecipe();
@@ -65,6 +70,27 @@ public class TaskListUI : MonoBehaviour
         {
             tra.GetComponent<Image>().gameObject.SetActive(false);
         }
+        foreach (Transform tra in xMarkImageList)
+        {
+            tra.GetComponent<Image>().gameObject.SetActive(false);
+        }
+
+        tempQuestionMarkDic.Clear();
+        for (int i = 0; i < questionMarkList.Count; i++)
+        {
+            bool haveQuestion = UnityEngine.Random.Range(0, 11) > 8;
+            tempQuestionMarkDic[i] = haveQuestion;
+
+            if (haveQuestion)
+            {
+                questionMarkList[i].GetComponent<Image>().gameObject.SetActive(true);
+            }
+            else
+            {
+                questionMarkList[i].GetComponent<Image>().gameObject.SetActive(false);
+            }
+        }
+
         tempList.Clear();
         foreach (Transform transform in imagePartList)
         {
@@ -90,16 +116,22 @@ public class TaskListUI : MonoBehaviour
                 }
             }
         }
-        //ItemSelectUI.Instance.SetTaskParts(tempList);
-
     }
     public int GetTempList(int index)
     {
         return tempList[index];
     }
+    public bool CheckHaveQuestionMark(int index) //0-1-2 gelir. Question'ý varsa true döndürür
+    {
+        return tempQuestionMarkDic[index];
+    }
     public void SetActiveTick(int index)
     {
         tickImageList[index].gameObject.SetActive(true);
+    }
+    public void SetActiveXMark(int index)
+    {
+        xMarkImageList[index].gameObject.SetActive(true);
     }
 
 }
