@@ -6,7 +6,6 @@ using NaughtyAttributes;
 [CreateAssetMenu(menuName = "Scriptable Objects/Model/Hair")]
 public class HairSO : ScriptableObject
 {
-    public GameObject hairType; //düz, kývýrcýk, kel
     public Color color; //saç rengi
     public string colorHex; //saç rengi
     public string colorName; // "red", "green", "blue"

@@ -6,8 +6,6 @@ using NaughtyAttributes;
 [CreateAssetMenu(menuName = "Scriptable Objects/Model/Dress")]
 public class DressSO : ScriptableObject
 {
-    public GameObject dressModel; // giysi tipi
-
     public Color color;
     public string colorHex; 
     public string colorName;

@@ -8,7 +8,6 @@ public class AnimationManager : MonoBehaviour
     public static AnimationManager Instance { get; private set; }
 
     [SerializeField] private Animator inGameUI;
-    [SerializeField] private Animator itemSelectUI;
     [SerializeField] private Animator model;
 
     private void Awake()
@@ -25,16 +24,6 @@ public class AnimationManager : MonoBehaviour
     public void DeactivateInGameUI()
     {
         inGameUI.SetBool(StringData.ISACTIVE, false);
-    }
-    [Button]
-    public void ActivateItemSelectUI()
-    {
-        itemSelectUI.SetBool(StringData.ISACTIVE, true);
-    }
-    [Button]
-    public void DeactivateItemSelectUI()
-    {
-        itemSelectUI.SetBool(StringData.ISACTIVE, false);
     }
     [Button]
     public void ActivateDanceFemale()
