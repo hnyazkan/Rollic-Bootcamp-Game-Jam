@@ -11,6 +11,7 @@ using System;
 public class TaskListUI : MonoBehaviour
 {
     public static TaskListUI Instance { get; private set; }
+
     [SerializeField] private List<Transform> imagePartList;
     [SerializeField] private List<Transform> tickImageList;
     [SerializeField] private List<Transform> xMarkImageList;
@@ -132,6 +133,10 @@ public class TaskListUI : MonoBehaviour
     public void SetActiveXMark(int index)
     {
         xMarkImageList[index].gameObject.SetActive(true);
+    }
+    public Dictionary<int,string> GetTrueColorDictionary()
+    {
+        return colorDic;
     }
 
 }

@@ -23,6 +23,7 @@ public class ItemSelectUI : MonoBehaviour
     public event EventHandler<OnEyeColorChangedEventArgs> OnEyeColorChanged;
 
     public event EventHandler OnThreeStagesCompleted;
+    public event EventHandler OnOnePartChanged;
 
     public class OnLipColorChangedEventArgs : EventArgs
     {
@@ -107,6 +108,8 @@ public class ItemSelectUI : MonoBehaviour
     }
     private void GetStage(int stage)
     {
+        OnOnePartChanged?.Invoke(this, EventArgs.Empty);
+
         switch (stage)
         {
             case 0:

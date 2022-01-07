@@ -10,6 +10,7 @@ public class AnimationManager : MonoBehaviour
     [SerializeField] private Animator inGameUI;
     [SerializeField] private Animator failGameUI;
     [SerializeField] private Animator winGameUI;
+    [SerializeField] private Animator wheelUI;
     [SerializeField] private Animator model;
 
     private void Awake()
@@ -58,6 +59,16 @@ public class AnimationManager : MonoBehaviour
     public void DeactivateWinGameUI()
     {
         winGameUI.SetBool(StringData.ISACTIVE, false);
+    }
+    [Button]
+    public void ActivateWheelUI()
+    {
+        wheelUI.SetBool(StringData.ISACTIVE, true);
+    }
+    [Button]
+    public void DeactivateWheelUI()
+    {
+        wheelUI.SetBool(StringData.ISACTIVE, false);
     }
 
 }
