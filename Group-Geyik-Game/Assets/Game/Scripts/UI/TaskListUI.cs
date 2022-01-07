@@ -12,6 +12,7 @@ public class TaskListUI : MonoBehaviour
 {
     public static TaskListUI Instance { get; private set; }
     [SerializeField] private List<Transform> imagePartList;
+    [SerializeField] private List<Transform> tickImageList;
 
     private Dictionary<int, Sprite> imageDic;
     private Dictionary<int, string> colorDic;
@@ -60,6 +61,10 @@ public class TaskListUI : MonoBehaviour
 
     private void GetRandomRecipes()
     {
+        foreach (Transform tra in tickImageList)
+        {
+            tra.GetComponent<Image>().gameObject.SetActive(false);
+        }
         tempList.Clear();
         foreach (Transform transform in imagePartList)
         {
@@ -92,6 +97,9 @@ public class TaskListUI : MonoBehaviour
     {
         return tempList[index];
     }
-
+    public void SetActiveTick(int index)
+    {
+        tickImageList[index].gameObject.SetActive(true);
+    }
 
 }

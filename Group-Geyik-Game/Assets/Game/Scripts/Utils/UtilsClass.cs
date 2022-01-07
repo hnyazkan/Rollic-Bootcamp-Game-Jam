@@ -33,7 +33,7 @@ public static class UtilsClass
         if (mainCamera == null) mainCamera = Camera.main;
         Vector3 mouseWorldPosition = transform == null ? mainCamera.ScreenToWorldPoint(Input.mousePosition) :
             Camera.main.ScreenToWorldPoint(transform.position);
-        mouseWorldPosition.z = posZ;
+        //mouseWorldPosition.z = posZ;
         return mouseWorldPosition;
     }
     /// <summary>
@@ -60,6 +60,14 @@ public static class UtilsClass
         Vector3 mouseVector = GetScreenToWorldPosition() - bulletSource.position;
         mouseVector.z = posZ;
         return mouseVector;
+    }
+    public static Vector3 GetMouseWorldPosition()
+    {
+        if (mainCamera == null) mainCamera = Camera.main;
+        Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        mouseWorldPos.y -= 2.3f;
+        mouseWorldPos.z = -3f;
+        return mouseWorldPos;
     }
     /// <summary>
     /// ok atarken gideceği yön vektörünü bulmak için

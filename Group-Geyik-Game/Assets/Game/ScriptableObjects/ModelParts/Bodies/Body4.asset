@@ -16,5 +16,5 @@ MonoBehaviour:
   color: {r: 0.33962262, g: 0.29161477, b: 0.21274473, a: 0}
   colorHex: 574A36
   colorName: Brownnnn
-  sprite: {fileID: 21300000, guid: 5d04e9f2b7878b849a728af17997fefe, type: 3}
+  sprite: {fileID: 21300000, guid: 14d8921eb74e48045966e6960eb8c3e1, type: 3}
   taskSprite: {fileID: 21300000, guid: 5d04e9f2b7878b849a728af17997fefe, type: 3}

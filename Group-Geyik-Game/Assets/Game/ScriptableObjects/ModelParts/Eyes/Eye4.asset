@@ -15,5 +15,5 @@ MonoBehaviour:
   color: {r: 0, g: 0, b: 0, a: 0}
   colorHex: 000000
   colorName: Black
-  sprite: {fileID: 21300000, guid: 1de6687be6f7525419bbe0a7b2171dca, type: 3}
+  sprite: {fileID: 21300000, guid: 47495da3312495741b20b7d883c7fdc6, type: 3}
   taskSprite: {fileID: 21300000, guid: 9eb35ff80ce700a49b5a863a007efc9e, type: 3}

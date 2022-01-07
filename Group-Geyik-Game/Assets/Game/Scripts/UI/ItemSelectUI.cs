@@ -49,7 +49,7 @@ public class ItemSelectUI : MonoBehaviour
     private EyeListSO eyeList;
     private LipListSO lipList;
 
-    [ShowNonSerializedField] private const int maxItemCount = 3;
+    [ShowNonSerializedField] private const int maxItemCount = 5;
 
     private int taskPartOne, taskPartTwo, taskPartThree;
     private int stage = 1;
@@ -184,6 +184,7 @@ public class ItemSelectUI : MonoBehaviour
                     Debug.Log("doru");
                     OnHairColorChanged?.Invoke(this, new OnHairColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedHair().colorHex });
                     ProgressBarUI.Instance.OneTaskDone();
+                    TaskListUI.Instance.SetActiveTick(stage - 1);
                     CheckStage();
                 });
             }
@@ -202,6 +203,7 @@ public class ItemSelectUI : MonoBehaviour
             {
                 Debug.Log("doru");
                 ProgressBarUI.Instance.OneTaskDone();
+                TaskListUI.Instance.SetActiveTick(stage - 1);
                 CheckStage();
             });
         }
@@ -252,6 +254,7 @@ public class ItemSelectUI : MonoBehaviour
                     Debug.Log("doru");
                     OnEyeColorChanged?.Invoke(this, new OnEyeColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedEye().colorHex });
                     ProgressBarUI.Instance.OneTaskDone();
+                    TaskListUI.Instance.SetActiveTick(stage - 1);
                     CheckStage();
                 });
             }
@@ -269,6 +272,7 @@ public class ItemSelectUI : MonoBehaviour
             {
                 Debug.Log("doru");
                 ProgressBarUI.Instance.OneTaskDone();
+                TaskListUI.Instance.SetActiveTick(stage - 1);
                 CheckStage();
             });
         }
@@ -317,6 +321,7 @@ public class ItemSelectUI : MonoBehaviour
                     Debug.Log("doru");
                     OnDressColorChanged?.Invoke(this, new OnDressColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedDress().colorHex });
                     ProgressBarUI.Instance.OneTaskDone();
+                    TaskListUI.Instance.SetActiveTick(stage - 1);
                     CheckStage();
                 });
             }
@@ -334,6 +339,7 @@ public class ItemSelectUI : MonoBehaviour
             {
                 Debug.Log("doru");
                 ProgressBarUI.Instance.OneTaskDone();
+                TaskListUI.Instance.SetActiveTick(stage - 1);
                 CheckStage();
             });
         }
@@ -381,6 +387,7 @@ public class ItemSelectUI : MonoBehaviour
                     Debug.Log("doru");
                     OnBodyColorChanged?.Invoke(this, new OnBodyColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedBody().colorHex });
                     ProgressBarUI.Instance.OneTaskDone();
+                    TaskListUI.Instance.SetActiveTick(stage - 1);
                     CheckStage();
                 });
             }
@@ -398,6 +405,7 @@ public class ItemSelectUI : MonoBehaviour
             {
                 Debug.Log("doru");
                 ProgressBarUI.Instance.OneTaskDone();
+                TaskListUI.Instance.SetActiveTick(stage - 1);
                 CheckStage();
             });
         }
@@ -445,6 +453,7 @@ public class ItemSelectUI : MonoBehaviour
                     Debug.Log("doru");
                     OnLipColorChanged?.Invoke(this, new OnLipColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedLips().colorHex });
                     ProgressBarUI.Instance.OneTaskDone();
+                    TaskListUI.Instance.SetActiveTick(stage - 1);
                     CheckStage();
                 });
             }
@@ -462,6 +471,7 @@ public class ItemSelectUI : MonoBehaviour
             {
                 Debug.Log("doru");
                 ProgressBarUI.Instance.OneTaskDone();
+                TaskListUI.Instance.SetActiveTick(stage - 1);
                 CheckStage();
             });
         }
