@@ -50,6 +50,7 @@ public class ProgressBarUI : MonoBehaviour
         if (currentProgress == maxProgress)
         {
             AnimationManager.Instance.ActivateDanceFemale();
+            Score.stars = (int) currentProgress;
         }
         UpdateProgressAmountNormalized();
     }
