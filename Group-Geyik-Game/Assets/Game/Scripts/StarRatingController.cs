@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StarRatingController : MonoBehaviour
 {
-    public Animator anim;
+    public Animator anim; 
 
     private void Start()
     {

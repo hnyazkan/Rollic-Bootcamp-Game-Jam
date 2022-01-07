@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.574817, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3226,7 +3226,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5540616943380430924, guid: 619b6af8e31e39b4e8df022eca97b125, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5540616943380430924, guid: 619b6af8e31e39b4e8df022eca97b125, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3307,6 +3307,14 @@ PrefabInstance:
     - target: {fileID: 5540616943380430927, guid: 619b6af8e31e39b4e8df022eca97b125, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5540616944317078369, guid: 619b6af8e31e39b4e8df022eca97b125, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 1822988039}
+    - target: {fileID: 5540616944317078369, guid: 619b6af8e31e39b4e8df022eca97b125, type: 3}
+      propertyPath: stars
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 619b6af8e31e39b4e8df022eca97b125, type: 3}
@@ -6823,6 +6831,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1800112763}
   m_CullTransparentMesh: 1
+--- !u!95 &1822988039 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5540616944317078374, guid: 619b6af8e31e39b4e8df022eca97b125, type: 3}
+  m_PrefabInstance: {fileID: 945287188}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1828892308
 GameObject:
   m_ObjectHideFlags: 0
