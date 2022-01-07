@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8975d680dcee5fa4fae44d64fa11fa01, type: 3}
   m_Name: Dress5
   m_EditorClassIdentifier: 
-  dressModel: {fileID: 0}
   color: {r: 0.39798862, g: 0.8207547, b: 0.46661216, a: 1}
   colorHex: 65D177
   colorName: Green
-  sprite: {fileID: 21300000, guid: be5b410fcefc0d245b97267b1d43ca80, type: 3}
+  sprite: {fileID: 21300000, guid: c3240bf40a0783044a0acf549521cae1, type: 3}
   taskSprite: {fileID: 21300000, guid: be5b410fcefc0d245b97267b1d43ca80, type: 3}

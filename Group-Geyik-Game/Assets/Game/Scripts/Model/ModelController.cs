@@ -4,7 +4,7 @@ using UnityEngine;
 using NaughtyAttributes;
 public class ModelController : MonoBehaviour
 {
-    [SerializeField] private ItemSelectUI ui;
+    [SerializeField] private ItemSelectUI itemSelectUI;
 
     [SerializeField] private Transform[] dress, eye, lip, body, hair;
 
@@ -18,12 +18,12 @@ public class ModelController : MonoBehaviour
 
     private void InitObserver()
     {
-        ui.OnHairColorChanged += Ui_OnHairColorChanged;
-        ui.OnBodyColorChanged += Ui_OnBodyColorChanged;
-        ui.OnDressColorChanged += Ui_OnDressColorChanged;
-        ui.OnLipColorChanged += Ui_OnLipColorChanged;
-        ui.OnEyeColorChanged += Ui_OnEyeColorChanged;
-        ui.OnThreeStagesCompleted += Ui_OnThreeStagesCompleted;
+        itemSelectUI.OnHairColorChanged += Ui_OnHairColorChanged;
+        itemSelectUI.OnBodyColorChanged += Ui_OnBodyColorChanged;
+        itemSelectUI.OnDressColorChanged += Ui_OnDressColorChanged;
+        itemSelectUI.OnLipColorChanged += Ui_OnLipColorChanged;
+        itemSelectUI.OnEyeColorChanged += Ui_OnEyeColorChanged;
+        itemSelectUI.OnThreeStagesCompleted += Ui_OnThreeStagesCompleted;
     }
 
     #region Observer
@@ -39,6 +39,7 @@ public class ModelController : MonoBehaviour
 
     private void Ui_OnDressColorChanged(object sender, ItemSelectUI.OnDressColorChangedEventArgs e)
     {
+        //ChangeMultipleColor(UtilsClass.GetColorFromString(e.str), dress[dressIndex]);
         ChangeColor(UtilsClass.GetColorFromString(e.str), dress[dressIndex]);
     }
 
@@ -62,10 +63,15 @@ public class ModelController : MonoBehaviour
     [Button]
     private void CreateNewCharacter()
     {
+        dressIndex = UnityEngine.Random.Range(0, dress.Length);
         CreateOnePart(dress, dressIndex);
+        eyeIndex = UnityEngine.Random.Range(0, eye.Length);
         CreateOnePart(eye, eyeIndex);
+        lipIndex = UnityEngine.Random.Range(0, lip.Length);
         CreateOnePart(lip, lipIndex);
+        bodyIndex = UnityEngine.Random.Range(0, body.Length);
         CreateOnePart(body, bodyIndex);
+        hairIndex = UnityEngine.Random.Range(0, hair.Length);
         CreateOnePart(hair, hairIndex);
     }
 
@@ -75,8 +81,6 @@ public class ModelController : MonoBehaviour
         {
             transform.gameObject.SetActive(false);
         }
-
-        index = UnityEngine.Random.Range(0, transformList.Length);
         transformList[index].transform.gameObject.SetActive(true);
     }
     private void ChangeColor(Color color, Transform part)

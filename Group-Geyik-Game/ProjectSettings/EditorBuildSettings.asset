@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Game/Scenes/OmerScene.unity
+    guid: c1b1ea9eb85c18f40b2e3312b022cd45
   m_configObjects: {}
