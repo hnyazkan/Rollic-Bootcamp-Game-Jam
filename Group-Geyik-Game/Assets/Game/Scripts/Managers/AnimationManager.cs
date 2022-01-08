@@ -13,7 +13,8 @@ public class AnimationManager : MonoBehaviour
     [SerializeField] private Animator failGameUI;
     [SerializeField] private Animator winGameUI;
     [SerializeField] private Animator wheelUI;
-    [SerializeField] private Animator model;
+    [SerializeField] private Animator modelFemale;
+    [SerializeField] private Animator modelMale;
 
 
     private void Awake()
@@ -57,14 +58,22 @@ public class AnimationManager : MonoBehaviour
     [Button]
     public void ActivateDanceFemale()
     {
-        model.SetBool(StringData.ISDANCING, true);
+        modelFemale.SetBool(StringData.ISDANCING, true);
     }
     [Button]
     public void DeactivateDanceFemale()
     {
-        model.SetBool(StringData.ISDANCING, false);
+        modelFemale.SetBool(StringData.ISDANCING, false);
     }
-
+    public void ActivateDanceMale()
+    {
+        modelMale.SetBool(StringData.ISDANCING, true);
+    }
+    [Button]
+    public void DeactivateDanceMale()
+    {
+        modelMale.SetBool(StringData.ISDANCING, false);
+    }
     [Button]
     public void ActivateFailGameUI()
     {
