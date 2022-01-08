@@ -7,16 +7,30 @@ public class AnimationManager : MonoBehaviour
 {
     public static AnimationManager Instance { get; private set; }
 
+    [SerializeField] private Animator introGameUI;
     [SerializeField] private Animator inGameUI;
     [SerializeField] private Animator failGameUI;
     [SerializeField] private Animator winGameUI;
     [SerializeField] private Animator wheelUI;
     [SerializeField] private Animator model;
 
+
     private void Awake()
     {
         Instance = this;
     }
+
+    [Button]
+    public void ActivateIntroGameUI()
+    {
+        introGameUI.SetBool(StringData.ISACTIVE, true);
+    }
+    [Button]
+    public void DeactivateIntroGameUI()
+    {
+        introGameUI.SetBool(StringData.ISACTIVE, false);
+    }
+
 
     [Button]
     public void ActivateInGameUI()
