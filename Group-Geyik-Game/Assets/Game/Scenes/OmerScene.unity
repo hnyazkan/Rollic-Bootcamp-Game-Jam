@@ -454,13 +454,14 @@ GameObject:
   m_Component:
   - component: {fileID: 58270204}
   - component: {fileID: 58270205}
+  - component: {fileID: 58270206}
   m_Layer: 5
   m_Name: IntroUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &58270204
 RectTransform:
   m_ObjectHideFlags: 0
@@ -514,6 +515,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &58270206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58270203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2118d6319b4b7354596d82aca047bec3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inGameUI: {fileID: 2009810631}
 --- !u!1 &61732538
 GameObject:
   m_ObjectHideFlags: 0
@@ -3120,7 +3134,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 591977856}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 971132487}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &591977856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5541,6 +5567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemSelectUI: {fileID: 1613439491}
+  inGameUI: {fileID: 2009810631}
   maleModel: {fileID: 543450652933583879}
   femaleModel: {fileID: 543450652544969183}
   male2dImage: {fileID: 5251614300887585622}
@@ -7161,8 +7188,8 @@ MonoBehaviour:
   loadingGameUI: {fileID: 1739296624}
   introGameUI: {fileID: 58270205}
   inGameUI: {fileID: 2009810632}
-  failGameUI: {fileID: 0}
-  winGameUI: {fileID: 0}
+  failGameUI: {fileID: 971132489}
+  winGameUI: {fileID: 1393583499}
   wheelUI: {fileID: 91909653}
   modelFemale: {fileID: 5866666020849611685}
   modelMale: {fileID: 5866666021249789565}
@@ -7628,13 +7655,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 1371248153}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -7904,7 +7931,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1393583498
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9398,8 +9425,11 @@ MonoBehaviour:
   - {fileID: 958125119}
   - {fileID: 1173579492}
   - {fileID: 39139460}
+  winUI: {fileID: 1393583498}
+  loseUI: {fileID: 971132488}
+  wheelUI: {fileID: 91909651}
+  levelText: {fileID: 723783309}
   handTransform: {fileID: 286131342}
-  isDrag: 0
 --- !u!1 &1634880541
 GameObject:
   m_ObjectHideFlags: 0

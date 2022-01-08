@@ -13,7 +13,6 @@ public class Score : MonoBehaviour
     {
         Instance = this;
     } 
-
   
     /*
      * Nerede player yanlýþ seçim yaparsa star sayýsýný azalt.

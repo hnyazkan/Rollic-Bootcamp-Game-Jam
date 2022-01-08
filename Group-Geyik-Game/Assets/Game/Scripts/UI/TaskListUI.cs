@@ -79,7 +79,7 @@ public class TaskListUI : MonoBehaviour
         tempQuestionMarkDic.Clear();
         for (int i = 0; i < questionMarkList.Count; i++)
         {
-            bool haveQuestion = UnityEngine.Random.Range(0, 11) > 8;
+            bool haveQuestion = UnityEngine.Random.Range(0, 11) > 9;
             tempQuestionMarkDic[i] = haveQuestion;
 
             if (haveQuestion)

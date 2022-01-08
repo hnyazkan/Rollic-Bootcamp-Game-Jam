@@ -1,5 +1,7 @@
 using UnityEngine;
+using Unity.Collections;
 using NaughtyAttributes;
+using System.Collections;
 
 public class ProgressBarUI : MonoBehaviour
 {
@@ -8,11 +10,14 @@ public class ProgressBarUI : MonoBehaviour
     [SerializeField] private Transform heartOn;
     [SerializeField] private Transform heartOff;
 
+
+
     [SerializeField] private float lerpSpeed = 2f; //yeþil bar dolma hareket hýzý
 
     private Transform barTransform;
     private float currentProgress = 0f; //yapýlan görev
     private float maxProgress = 3f; //toplam görev
+    private int clickTime = 0;
 
 
     private void Awake()
@@ -47,22 +52,29 @@ public class ProgressBarUI : MonoBehaviour
     public void OneTaskDone()
     {
         currentProgress += 1;
+
         if (currentProgress == maxProgress)
         {
             AnimationManager.Instance.ActivateDanceFemale();
             AnimationManager.Instance.ActivateDanceMale();
-            Score.stars = (int) currentProgress;
         }
+
         UpdateProgressAmountNormalized();
+    }
+    public int GetScore()
+    {
+        return (int)currentProgress;
     }
     public void ResetBar()
     {
+
         heartOn.gameObject.SetActive(false);
         heartOff.gameObject.SetActive(true);
         currentProgress = 0;
 
         AnimationManager.Instance.DeactivateDanceFemale();
         AnimationManager.Instance.DeactivateDanceMale();
+        clickTime = 0;
         UpdateProgressAmountNormalized();
     }
     private float UpdateProgressAmountNormalized()
