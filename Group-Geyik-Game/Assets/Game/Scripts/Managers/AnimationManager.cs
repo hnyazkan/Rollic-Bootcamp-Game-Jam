@@ -7,6 +7,7 @@ public class AnimationManager : MonoBehaviour
 {
     public static AnimationManager Instance { get; private set; }
 
+    [SerializeField] private Animator loadingGameUI;
     [SerializeField] private Animator introGameUI;
     [SerializeField] private Animator inGameUI;
     [SerializeField] private Animator failGameUI;
@@ -18,6 +19,17 @@ public class AnimationManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+
+    [Button]
+    public void ActivateLoadingGameUI()
+    {
+        introGameUI.SetBool(StringData.ISACTIVE, true);
+    }
+    [Button]
+    public void DeactivateLoadingGameUI()
+    {
+        introGameUI.SetBool(StringData.ISACTIVE, false);
     }
 
     [Button]
