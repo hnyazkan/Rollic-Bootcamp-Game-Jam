@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fbd19c22438043e45834b62217f7de15, type: 3}
-  m_Name: Body5 3
+  m_Name: Body7
   m_EditorClassIdentifier: 
-  bodyType: {fileID: 0}
-  color: {r: 0.2929156, g: 0.6415094, b: 0.39968514, a: 0.35686275}
+  color: {r: 0.4014774, g: 0.5868131, b: 0.6132076, a: 1}
   colorHex: 4BA466
-  colorName: Green
+  colorName: Blaau
   sprite: {fileID: 21300000, guid: 14d8921eb74e48045966e6960eb8c3e1, type: 3}
   taskSprite: {fileID: 21300000, guid: 5d04e9f2b7878b849a728af17997fefe, type: 3}

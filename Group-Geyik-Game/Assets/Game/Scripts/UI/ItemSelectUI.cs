@@ -639,7 +639,8 @@ public class ItemSelectUI : MonoBehaviour
     private IEnumerator WheelTime()
     {
         Debug.Log("çark.exe çalýþtý");
-        yield return new WaitForSeconds(5f);
+        AnimationManager.Instance.ActivateWheelUI();
+        yield return new WaitForSeconds(7f);
         Debug.Log("çark bitti");
     }
     private IEnumerator ThreeStagesCompleted()
