@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private ItemSelectUI itemSelectUI;
+    [SerializeField] private Transform inGameUI;
 
     [SerializeField] private Transform maleModel;
     [SerializeField] private Transform femaleModel;
@@ -21,10 +22,14 @@ public class GameManager : MonoBehaviour
 
         male2dImage.gameObject.SetActive(false);
         female2dImage.gameObject.SetActive(true);
+
+        inGameUI.gameObject.SetActive(false);
     }
     private void Start()
     {
         itemSelectUI.OnThreeStagesCompleted += ÝtemSelectUI_OnThreeStagesCompleted;
+
+        AnimationManager.Instance.ActivateLoadingGameUI();
     }
 
     private void ÝtemSelectUI_OnThreeStagesCompleted(object sender, System.EventArgs e)

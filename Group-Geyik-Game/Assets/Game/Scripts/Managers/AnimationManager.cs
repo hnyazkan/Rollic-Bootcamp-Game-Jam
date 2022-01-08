@@ -16,21 +16,32 @@ public class AnimationManager : MonoBehaviour
     [SerializeField] private Animator modelFemale;
     [SerializeField] private Animator modelMale;
 
+    [SerializeField] private Transform introUI;
+
 
     private void Awake()
     {
         Instance = this;
+
+        introUI.gameObject.SetActive(false);
     }
 
     [Button]
     public void ActivateLoadingGameUI()
     {
-        introGameUI.SetBool(StringData.ISACTIVE, true);
+        loadingGameUI.SetBool(StringData.ISACTIVE, true);
+        StartCoroutine("PlayIntroUI");
     }
     [Button]
     public void DeactivateLoadingGameUI()
     {
-        introGameUI.SetBool(StringData.ISACTIVE, false);
+        loadingGameUI.SetBool(StringData.ISACTIVE, false);
+    }
+    private IEnumerator PlayIntroUI()
+    {
+        yield return new WaitForSeconds(5f);
+        introUI.gameObject.SetActive(true);
+
     }
 
     [Button]
