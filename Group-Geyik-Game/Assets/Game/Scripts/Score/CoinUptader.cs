@@ -21,6 +21,7 @@ public class CoinUptader : MonoBehaviour
 
     public void ChangeCoinText()
     {
-        coinsText.text = Score.totalCoin.ToString();
+        //coinsText.text = Score.totalCoin.ToString();
+        coinsText.text = "100";
     }
 }

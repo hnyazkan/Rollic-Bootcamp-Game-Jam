@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fbd19c22438043e45834b62217f7de15, type: 3}
-  m_Name: Body5 2
+  m_Name: Body6
   m_EditorClassIdentifier: 
-  bodyType: {fileID: 0}
-  color: {r: 0.2929156, g: 0.6415094, b: 0.39968514, a: 0.35686275}
-  colorHex: 4BA466
-  colorName: Green
+  color: {r: 0.6431373, g: 0.29411766, b: 0.32010284, a: 0.35686275}
+  colorHex: A44B52
+  colorName: Reddy
   sprite: {fileID: 21300000, guid: 14d8921eb74e48045966e6960eb8c3e1, type: 3}
   taskSprite: {fileID: 21300000, guid: 5d04e9f2b7878b849a728af17997fefe, type: 3}

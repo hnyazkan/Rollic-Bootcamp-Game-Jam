@@ -5,15 +5,26 @@ using UnityEngine.UI;
 using NaughtyAttributes;
 using System;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class ItemSelectUI : MonoBehaviour
 {
     public static ItemSelectUI Instance { get; private set; }
 
     [SerializeField] private List<Transform> itemList; // UI'daki 5 buton
+
+    [SerializeField] private Transform winUI;
+    [SerializeField] private Transform loseUI;
+    [SerializeField] private Transform wheelUI;
+    [SerializeField] private Transform levelText;
+
+
     public Transform handTransform;
 
-    public bool isDrag = false;
+    private bool isDrag = false;
+    private int currentLevel = 1;
+
+
 
     #region Observer
     public event EventHandler<OnHairColorChangedEventArgs> OnHairColorChanged;
@@ -638,15 +649,29 @@ public class ItemSelectUI : MonoBehaviour
 
     private IEnumerator WheelTime()
     {
-        Debug.Log("çark.exe çalýþtý");
-        yield return new WaitForSeconds(5f);
-        Debug.Log("çark bitti");
+        wheelUI.gameObject.SetActive(true);
+        AnimationManager.Instance.ActivateWheelUI();
+        yield return new WaitForSeconds(7f);
+        wheelUI.gameObject.SetActive(false);
     }
     private IEnumerator ThreeStagesCompleted()
     {
         //kazanma ekraný bekleme sekansý
-
+        if (ProgressBarUI.Instance.GetScore() >= 1)
+        {
+            winUI.transform.gameObject.SetActive(true);
+        }
+        else
+        {
+            loseUI.transform.gameObject.SetActive(true);
+        }
         yield return new WaitForSeconds(4f);
+
+        winUI.transform.gameObject.SetActive(false);
+        loseUI.transform.gameObject.SetActive(false);
+
+        currentLevel++;
+        levelText.GetComponent<TextMeshProUGUI>().SetText(currentLevel.ToString());
 
         //progress bar'ý sýfýrla
         ProgressBarUI.Instance.ResetBar();
