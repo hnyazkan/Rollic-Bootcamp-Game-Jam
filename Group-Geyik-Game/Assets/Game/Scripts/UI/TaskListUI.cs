@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using NaughtyAttributes;
 
 /// <summary>
 /// Task'ler burada üretilir. Göz ve rengi üretildi diyelim. ItemUI'a bunun haberi gider ve ona göre slot üretir.
@@ -16,6 +17,8 @@ public class TaskListUI : MonoBehaviour
     [SerializeField] private List<Transform> tickImageList;
     [SerializeField] private List<Transform> xMarkImageList;
     [SerializeField] private List<Transform> questionMarkList;
+
+    [SerializeField] [Range(0, 11)] private int questionThreshold = 0;
 
     private Dictionary<int, Sprite> imageDic;
     private Dictionary<int, string> colorDic;
@@ -79,7 +82,7 @@ public class TaskListUI : MonoBehaviour
         tempQuestionMarkDic.Clear();
         for (int i = 0; i < questionMarkList.Count; i++)
         {
-            bool haveQuestion = UnityEngine.Random.Range(0, 11) > 9;
+            bool haveQuestion = UnityEngine.Random.Range(0, 11) > questionThreshold;
             tempQuestionMarkDic[i] = haveQuestion;
 
             if (haveQuestion)
@@ -134,7 +137,7 @@ public class TaskListUI : MonoBehaviour
     {
         xMarkImageList[index].gameObject.SetActive(true);
     }
-    public Dictionary<int,string> GetTrueColorDictionary()
+    public Dictionary<int, string> GetTrueColorDictionary()
     {
         return colorDic;
     }

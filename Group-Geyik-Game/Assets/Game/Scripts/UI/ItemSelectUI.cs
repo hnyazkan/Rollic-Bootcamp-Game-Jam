@@ -18,6 +18,7 @@ public class ItemSelectUI : MonoBehaviour
     [SerializeField] private Transform wheelUI;
     [SerializeField] private Transform levelText;
 
+    private Action RefFunction;
 
     public Transform handTransform;
 
@@ -173,7 +174,7 @@ public class ItemSelectUI : MonoBehaviour
         {
             bool isAllItemSlotsFilled = maxItemCount == tempList.Count;
 
-            // Farklý saçlarýn farklý sýrada olacak þekilde UI'a dizilmesi. 3'ten fazla saç varsa sadece 3 tanesinin alýnmasý. Çýldýrdým yazarken
+            // Farklý saçlarýn farklý sýrada olacak þekilde UI'a dizilmesi. 5'ten fazla saç varsa sadece 5 tanesinin alýnmasý. Çýldýrdým yazarken
             while (!isAllItemSlotsFilled)
             {
                 int randomIndex = UnityEngine.Random.Range(0, hairList.list.Count);
@@ -199,72 +200,115 @@ public class ItemSelectUI : MonoBehaviour
                         if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
                         {
 
-                            StartCoroutine(WheelTime());
-                        }
-                        Debug.Log("yanlýþ");
-                        TaskListUI.Instance.SetActiveXMark(stage - 1);
-                        OnHairColorChanged?.Invoke(this, new OnHairColorChangedEventArgs { str = hairList.list[randomIndex].colorHex });
-                        CheckStage();
+                            RefFunction = () =>
+                            {
+                                Debug.Log("yanlýþ");
+                                TaskListUI.Instance.SetActiveXMark(stage - 1);
+                                OnHairColorChanged?.Invoke(this, new OnHairColorChangedEventArgs { str = hairList.list[randomIndex].colorHex });
+                                CheckStage();
+                            };
 
+                            StartCoroutine(WheelTime(RefFunction));
+                        }
+                        else
+                        {
+                            Debug.Log("doru");
+                            OnHairColorChanged?.Invoke(this, new OnHairColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedHair().colorHex });
+                            ProgressBarUI.Instance.OneTaskDone();
+                            TaskListUI.Instance.SetActiveTick(stage - 1);
+                            CheckStage();
+                        }
                     });
                     tempList.Add(randomIndex);
                     isAllItemSlotsFilled = true;
                 }
             }
         }
-        tempList.Clear();
+        //tempList.Clear();
 
         bool shouldI = true; //butonlarda, task listteki istenen rengi oluþturmama gerek var mý
-        foreach (Transform transform in itemList)
-        {
-            //aradýðým renk zaten varsa butona týklayýncaki negatif özelliðini kaldýrýrýz
-            if (RecipeManager.Instance.GetRecipedHair().colorHex == UtilsClass.GetStringFromColor(transform.Find(StringData.IMAGE).GetComponent<Image>().color))
+       
+            foreach (Transform transform in itemList)
             {
-                shouldI = false;
+                //aradýðým renk zaten varsa butona týklayýncaki negatif özelliðini kaldýrýrýz
+                if (RecipeManager.Instance.GetRecipedHair().colorHex == UtilsClass.GetStringFromColor(transform.Find(StringData.IMAGE).GetComponent<Image>().color))
+                {
+                    shouldI = false;
 
-                //halihazýrda varolan butona, týklayýnca nolcaðýný eklerim
-                transform.GetComponent<Button>().onClick.RemoveAllListeners();
-                transform.GetComponent<Button>().onClick.AddListener(() =>
+                    //halihazýrda varolan butona, týklayýnca nolcaðýný eklerim
+                    transform.GetComponent<Button>().onClick.RemoveAllListeners();
+                    transform.GetComponent<Button>().onClick.AddListener(() =>
+                    {
+                        if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                        {
+                            RefFunction = () =>
+                            {
+                                Debug.Log("doru");
+                                OnHairColorChanged?.Invoke(this, new OnHairColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedHair().colorHex });
+                                ProgressBarUI.Instance.OneTaskDone();
+                                TaskListUI.Instance.SetActiveTick(stage - 1);
+                                CheckStage();
+                            };
+                            StartCoroutine(WheelTime(RefFunction));
+
+                        }
+                        else
+                        {
+                            Debug.Log("doru");
+                            OnHairColorChanged?.Invoke(this, new OnHairColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedHair().colorHex });
+                            ProgressBarUI.Instance.OneTaskDone();
+                            TaskListUI.Instance.SetActiveTick(stage - 1);
+                            CheckStage();
+                        }
+
+                    });
+                }
+            }
+            //aradýðým renk oluþmamýþsa biz oluþtururuz.
+            if (shouldI)
+            {
+                int itemListIndex = UnityEngine.Random.Range(0, 3);
+
+                Image imagee = itemList[itemListIndex].transform.Find(StringData.IMAGE).GetComponent<Image>();
+
+                imagee.sprite = RecipeManager.Instance.GetRecipedHair().sprite;
+                imagee.color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedHair().colorHex);
+
+                //butonun üzerine gelme
+                PointerEvents pointerEvents = itemList[itemListIndex].GetComponent<PointerEvents>();
+                pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
+                {
+                    handTransform.GetComponent<Image>().sprite = RecipeManager.Instance.GetRecipedHair().sprite;
+                    handTransform.GetComponent<Image>().color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedHair().colorHex);
+                };
+
+                itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
+                itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
                 {
                     if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
                     {
-                        StartCoroutine(WheelTime());
+                        RefFunction = () =>
+                        {
+
+                            Debug.Log("doru");
+                            ProgressBarUI.Instance.OneTaskDone();
+                            TaskListUI.Instance.SetActiveTick(stage - 1);
+                            CheckStage();
+                        };
+                        StartCoroutine(WheelTime(RefFunction));
+
                     }
-                    Debug.Log("doru");
-                    OnHairColorChanged?.Invoke(this, new OnHairColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedHair().colorHex });
-                    ProgressBarUI.Instance.OneTaskDone();
-                    TaskListUI.Instance.SetActiveTick(stage - 1);
-                    CheckStage();
+                    else
+                    {
+                        Debug.Log("doru");
+                        ProgressBarUI.Instance.OneTaskDone();
+                        TaskListUI.Instance.SetActiveTick(stage - 1);
+                        CheckStage();
+                    }
+
                 });
-            }
         }
-        //aradýðým renk oluþmamýþsa biz oluþtururuz.
-        if (shouldI)
-        {
-            int itemListIndex = UnityEngine.Random.Range(0, 3);
-
-            //butonun üzerine gelme
-            PointerEvents pointerEvents = itemList[itemListIndex].GetComponent<PointerEvents>();
-            pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
-            {
-                handTransform.GetComponent<Image>().sprite = RecipeManager.Instance.GetRecipedHair().sprite;
-                handTransform.GetComponent<Image>().color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedHair().colorHex);
-            };
-
-            itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
-            itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
-            {
-                if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
-                {
-                    StartCoroutine(WheelTime());
-                }
-                Debug.Log("doru");
-                ProgressBarUI.Instance.OneTaskDone();
-                TaskListUI.Instance.SetActiveTick(stage - 1);
-                CheckStage();
-            });
-        }
-
+        tempList.Clear();
     }
 
     private void GetEyes(EyeListSO eyeList)
@@ -297,12 +341,24 @@ public class ItemSelectUI : MonoBehaviour
                     {
                         if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
                         {
-                            StartCoroutine(WheelTime());
+                            RefFunction = () =>
+                            {
+                                Debug.Log("yanlýþ");
+                                TaskListUI.Instance.SetActiveXMark(stage - 1);
+                                OnEyeColorChanged?.Invoke(this, new OnEyeColorChangedEventArgs { str = eyeList.list[randomIndex].colorHex });
+                                CheckStage();
+                            };
+                            StartCoroutine(WheelTime(RefFunction));
+
                         }
-                        Debug.Log("yanlýþ");
-                        TaskListUI.Instance.SetActiveXMark(stage - 1);
-                        OnEyeColorChanged?.Invoke(this, new OnEyeColorChangedEventArgs { str = eyeList.list[randomIndex].colorHex });
-                        CheckStage();
+                        else
+                        {
+                            Debug.Log("yanlýþ");
+                            TaskListUI.Instance.SetActiveXMark(stage - 1);
+                            OnEyeColorChanged?.Invoke(this, new OnEyeColorChangedEventArgs { str = eyeList.list[randomIndex].colorHex });
+                            CheckStage();
+                        }
+
                     });
                     tempList.Add(randomIndex);
                     isAllItemSlotsFilled = true;
@@ -310,61 +366,91 @@ public class ItemSelectUI : MonoBehaviour
             }
         }
 
-        tempList.Clear();
-
         bool shouldI = true;
-
-        foreach (Transform transform in itemList)
-        {
-            if (RecipeManager.Instance.GetRecipedEye().colorHex == UtilsClass.GetStringFromColor(transform.Find(StringData.IMAGE).GetComponent<Image>().color))
+            foreach (Transform transform in itemList)
             {
-                shouldI = false;
+                
+                if (RecipeManager.Instance.GetRecipedEye().colorHex == UtilsClass.GetStringFromColor(transform.Find(StringData.IMAGE).GetComponent<Image>().color))
+                {
+                    shouldI = false;
 
-                //butona týklama
-                transform.GetComponent<Button>().onClick.RemoveAllListeners();
-                transform.GetComponent<Button>().onClick.AddListener(() =>
+                    //butona týklama
+                    transform.GetComponent<Button>().onClick.RemoveAllListeners();
+                    transform.GetComponent<Button>().onClick.AddListener(() =>
+                    {
+                        if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                        {
+                            RefFunction = () =>
+                            {
+                                Debug.Log("doru");
+                                OnEyeColorChanged?.Invoke(this, new OnEyeColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedEye().colorHex });
+                                ProgressBarUI.Instance.OneTaskDone();
+                                TaskListUI.Instance.SetActiveTick(stage - 1);
+                                CheckStage();
+                            };
+                            StartCoroutine(WheelTime(RefFunction));
+                        }
+                        else
+                        {
+                            Debug.Log("doru");
+                            OnEyeColorChanged?.Invoke(this, new OnEyeColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedEye().colorHex });
+                            ProgressBarUI.Instance.OneTaskDone();
+                            TaskListUI.Instance.SetActiveTick(stage - 1);
+                            CheckStage();
+                        }
+
+                    });
+                }
+            }
+            if (shouldI)
+            {
+                int itemListIndex = UnityEngine.Random.Range(0, 3);
+
+                Image imagee = itemList[itemListIndex].transform.Find(StringData.IMAGE).GetComponent<Image>();
+
+                imagee.sprite = RecipeManager.Instance.GetRecipedEye().sprite;
+                imagee.color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedEye().colorHex);
+
+                //Image imagee = itemList[itemListIndex].transform.Find(StringData.IMAGE).GetComponent<Image>();
+
+                //imagee.sprite = RecipeManager.Instance.GetRecipedEye().sprite;
+                //imagee.color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedEye().colorHex);
+
+                //butonun üzerine gelme
+                PointerEvents pointerEvents = itemList[itemListIndex].GetComponent<PointerEvents>();
+                pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
+                {
+                    handTransform.GetComponent<Image>().sprite = RecipeManager.Instance.GetRecipedEye().sprite;
+                    handTransform.GetComponent<Image>().color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedEye().colorHex);
+                };
+
+                itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
+                itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
                 {
                     if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
                     {
-                        StartCoroutine(WheelTime());
+                        RefFunction = () =>
+                        {
+                            Debug.Log("doru");
+                            ProgressBarUI.Instance.OneTaskDone();
+                            TaskListUI.Instance.SetActiveTick(stage - 1);
+                            CheckStage();
+                        };
+                        StartCoroutine(WheelTime(RefFunction));
+
                     }
-                    Debug.Log("doru");
-                    OnEyeColorChanged?.Invoke(this, new OnEyeColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedEye().colorHex });
-                    ProgressBarUI.Instance.OneTaskDone();
-                    TaskListUI.Instance.SetActiveTick(stage - 1);
-                    CheckStage();
+                    else
+                    {
+                        Debug.Log("doru");
+                        ProgressBarUI.Instance.OneTaskDone();
+                        TaskListUI.Instance.SetActiveTick(stage - 1);
+                        CheckStage();
+                    }
+
+
                 });
             }
-        }
-        if (shouldI)
-        {
-            int itemListIndex = UnityEngine.Random.Range(0, 3);
-            //Image imagee = itemList[itemListIndex].transform.Find(StringData.IMAGE).GetComponent<Image>();
-
-            //imagee.sprite = RecipeManager.Instance.GetRecipedEye().sprite;
-            //imagee.color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedEye().colorHex);
-
-            //butonun üzerine gelme
-            PointerEvents pointerEvents = itemList[itemListIndex].GetComponent<PointerEvents>();
-            pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
-            {
-                handTransform.GetComponent<Image>().sprite = RecipeManager.Instance.GetRecipedEye().sprite;
-                handTransform.GetComponent<Image>().color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedEye().colorHex);
-            };
-
-            itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
-            itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
-            {
-                if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
-                {
-                    StartCoroutine(WheelTime());
-                }
-                Debug.Log("doru");
-                ProgressBarUI.Instance.OneTaskDone();
-                TaskListUI.Instance.SetActiveTick(stage - 1);
-                CheckStage();
-            });
-        }
+        tempList.Clear();
     }
     private void GetDresses(DressTypeListSO dressList)
     {
@@ -395,12 +481,24 @@ public class ItemSelectUI : MonoBehaviour
                     {
                         if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
                         {
-                            StartCoroutine(WheelTime());
+                            RefFunction = () =>
+                            {
+                                Debug.Log("yanlýþ");
+                                TaskListUI.Instance.SetActiveXMark(stage - 1);
+                                OnDressColorChanged?.Invoke(this, new OnDressColorChangedEventArgs { str = dressList.list[randomIndex].colorHex });
+                                CheckStage();
+                            };
+                            StartCoroutine(WheelTime(RefFunction));
+
                         }
-                        Debug.Log("yanlýþ");
-                        TaskListUI.Instance.SetActiveXMark(stage - 1);
-                        OnDressColorChanged?.Invoke(this, new OnDressColorChangedEventArgs { str = dressList.list[randomIndex].colorHex });
-                        CheckStage();
+                        else
+                        {
+                            Debug.Log("yanlýþ");
+                            TaskListUI.Instance.SetActiveXMark(stage - 1);
+                            OnDressColorChanged?.Invoke(this, new OnDressColorChangedEventArgs { str = dressList.list[randomIndex].colorHex });
+                            CheckStage();
+                        }
+
                     });
                     tempList.Add(randomIndex);
                     isAllItemSlotsFilled = true;
@@ -409,56 +507,89 @@ public class ItemSelectUI : MonoBehaviour
 
         }
 
-        tempList.Clear();
-
         bool shouldI = true;
-        foreach (Transform transform in itemList)
-        {
-            if (RecipeManager.Instance.GetRecipedDress().colorHex == UtilsClass.GetStringFromColor(transform.Find(StringData.IMAGE).GetComponent<Image>().color))
-            {
-                shouldI = false;
 
-                //butona týklama
-                transform.GetComponent<Button>().onClick.RemoveAllListeners();
-                transform.GetComponent<Button>().onClick.AddListener(() =>
+            foreach (Transform transform in itemList)
+            {
+                
+                if (RecipeManager.Instance.GetRecipedDress().colorHex == UtilsClass.GetStringFromColor(transform.Find(StringData.IMAGE).GetComponent<Image>().color))
+                {
+                 
+                    shouldI = false;
+
+                    //butona týklama
+                    transform.GetComponent<Button>().onClick.RemoveAllListeners();
+                    transform.GetComponent<Button>().onClick.AddListener(() =>
+                    {
+                        if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                        {
+                            RefFunction = () =>
+                            {
+                                Debug.Log("doru");
+                                OnDressColorChanged?.Invoke(this, new OnDressColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedDress().colorHex });
+                                ProgressBarUI.Instance.OneTaskDone();
+                                TaskListUI.Instance.SetActiveTick(stage - 1);
+                                CheckStage();
+                            };
+                            StartCoroutine(WheelTime(RefFunction));
+
+                        }
+                        else
+                        {
+                            Debug.Log("doru");
+                            OnDressColorChanged?.Invoke(this, new OnDressColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedDress().colorHex });
+                            ProgressBarUI.Instance.OneTaskDone();
+                            TaskListUI.Instance.SetActiveTick(stage - 1);
+                            CheckStage();
+                        }
+
+                    });
+                }
+            }
+            if (shouldI)
+            {
+                int itemListIndex = UnityEngine.Random.Range(0, 3);
+
+                Image imagee = itemList[itemListIndex].transform.Find(StringData.IMAGE).GetComponent<Image>();
+
+                imagee.sprite = RecipeManager.Instance.GetRecipedDress().sprite;
+                imagee.color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedDress().colorHex);
+
+                //butonun üzerine gelme
+                PointerEvents pointerEvents = itemList[itemListIndex].GetComponent<PointerEvents>();
+                pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
+                {
+                    handTransform.GetComponent<Image>().sprite = RecipeManager.Instance.GetRecipedDress().sprite;
+                    handTransform.GetComponent<Image>().color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedDress().colorHex);
+                };
+
+                itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
+                itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
                 {
                     if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
                     {
-                        StartCoroutine(WheelTime());
+                        RefFunction = () =>
+                        {
+                            Debug.Log("doru");
+                            ProgressBarUI.Instance.OneTaskDone();
+                            TaskListUI.Instance.SetActiveTick(stage - 1);
+                            CheckStage();
+                        };
+                        StartCoroutine(WheelTime(RefFunction));
+
                     }
-                    Debug.Log("doru");
-                    OnDressColorChanged?.Invoke(this, new OnDressColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedDress().colorHex });
-                    ProgressBarUI.Instance.OneTaskDone();
-                    TaskListUI.Instance.SetActiveTick(stage - 1);
-                    CheckStage();
+                    else
+                    {
+                        Debug.Log("doru");
+                        ProgressBarUI.Instance.OneTaskDone();
+                        TaskListUI.Instance.SetActiveTick(stage - 1);
+                        CheckStage();
+                    }
+
                 });
             }
-        }
-        if (shouldI)
-        {
-            int itemListIndex = UnityEngine.Random.Range(0, 3);
-
-            //butonun üzerine gelme
-            PointerEvents pointerEvents = itemList[itemListIndex].GetComponent<PointerEvents>();
-            pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
-            {
-                handTransform.GetComponent<Image>().sprite = RecipeManager.Instance.GetRecipedDress().sprite;
-                handTransform.GetComponent<Image>().color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedDress().colorHex);
-            };
-
-            itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
-            itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
-            {
-                if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
-                {
-                    StartCoroutine(WheelTime());
-                }
-                Debug.Log("doru");
-                ProgressBarUI.Instance.OneTaskDone();
-                TaskListUI.Instance.SetActiveTick(stage - 1);
-                CheckStage();
-            });
-        }
+        
+        tempList.Clear();
     }
     private void GetBodies(BodyTypeListSO bodyList)
     {
@@ -489,12 +620,23 @@ public class ItemSelectUI : MonoBehaviour
                     {
                         if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
                         {
-                            StartCoroutine(WheelTime());
+                            RefFunction = () =>
+                            {
+                                Debug.Log("yanlýþ");
+                                TaskListUI.Instance.SetActiveXMark(stage - 1);
+                                OnBodyColorChanged?.Invoke(this, new OnBodyColorChangedEventArgs { str = bodyList.list[randomIndex].colorHex });
+                                CheckStage();
+                            };
+                            StartCoroutine(WheelTime(RefFunction));
+
                         }
-                        Debug.Log("yanlýþ");
-                        TaskListUI.Instance.SetActiveXMark(stage - 1);
-                        OnBodyColorChanged?.Invoke(this, new OnBodyColorChangedEventArgs { str = bodyList.list[randomIndex].colorHex });
-                        CheckStage();
+                        else
+                        {
+                            Debug.Log("yanlýþ");
+                            TaskListUI.Instance.SetActiveXMark(stage - 1);
+                            OnBodyColorChanged?.Invoke(this, new OnBodyColorChangedEventArgs { str = bodyList.list[randomIndex].colorHex });
+                            CheckStage();
+                        }
                     });
                     tempList.Add(randomIndex);
                     isAllItemSlotsFilled = true;
@@ -502,56 +644,87 @@ public class ItemSelectUI : MonoBehaviour
             }
         }
 
-        tempList.Clear();
-
         bool shouldI = true;
-        foreach (Transform transform in itemList)
-        {
-            if (RecipeManager.Instance.GetRecipedBody().colorHex == UtilsClass.GetStringFromColor(transform.Find(StringData.IMAGE).GetComponent<Image>().color))
+      
+            foreach (Transform transform in itemList)
             {
-                shouldI = false;
+                
+                 if (RecipeManager.Instance.GetRecipedBody().colorHex == UtilsClass.GetStringFromColor(transform.Find(StringData.IMAGE).GetComponent<Image>().color))
+                {
+                 
+                    shouldI = false;
 
-                //butona týklama
-                transform.GetComponent<Button>().onClick.RemoveAllListeners();
-                transform.GetComponent<Button>().onClick.AddListener(() =>
+                    //butona týklama
+                    transform.GetComponent<Button>().onClick.RemoveAllListeners();
+                    transform.GetComponent<Button>().onClick.AddListener(() =>
+                    {
+                        if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                        {
+                            RefFunction = () =>
+                            {
+                                Debug.Log("doru");
+                                OnBodyColorChanged?.Invoke(this, new OnBodyColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedBody().colorHex });
+                                ProgressBarUI.Instance.OneTaskDone();
+                                TaskListUI.Instance.SetActiveTick(stage - 1);
+                                CheckStage();
+                            };
+                            StartCoroutine(WheelTime(RefFunction));
+
+                        }
+                        else
+                        {
+                            Debug.Log("doru");
+                            OnBodyColorChanged?.Invoke(this, new OnBodyColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedBody().colorHex });
+                            ProgressBarUI.Instance.OneTaskDone();
+                            TaskListUI.Instance.SetActiveTick(stage - 1);
+                            CheckStage();
+                        }
+                    });
+                }
+            }
+            if (shouldI)
+            {
+                int itemListIndex = UnityEngine.Random.Range(0, 3);
+
+                Image imagee = itemList[itemListIndex].transform.Find(StringData.IMAGE).GetComponent<Image>();
+
+                imagee.sprite = RecipeManager.Instance.GetRecipedBody().sprite;
+                imagee.color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedBody().colorHex);
+
+                //butonun üzerine gelme
+                PointerEvents pointerEvents = itemList[itemListIndex].GetComponent<PointerEvents>();
+                pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
+                {
+                    handTransform.GetComponent<Image>().sprite = RecipeManager.Instance.GetRecipedBody().sprite;
+                    handTransform.GetComponent<Image>().color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedBody().colorHex);
+                };
+
+                itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
+                itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
                 {
                     if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
                     {
-                        StartCoroutine(WheelTime());
+                        RefFunction = () =>
+                        {
+                            Debug.Log("doru");
+                            ProgressBarUI.Instance.OneTaskDone();
+                            TaskListUI.Instance.SetActiveTick(stage - 1);
+                            CheckStage();
+                        };
+                        StartCoroutine(WheelTime(RefFunction));
+
                     }
-                    Debug.Log("doru");
-                    OnBodyColorChanged?.Invoke(this, new OnBodyColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedBody().colorHex });
-                    ProgressBarUI.Instance.OneTaskDone();
-                    TaskListUI.Instance.SetActiveTick(stage - 1);
-                    CheckStage();
+                    else
+                    {
+                        Debug.Log("doru");
+                        ProgressBarUI.Instance.OneTaskDone();
+                        TaskListUI.Instance.SetActiveTick(stage - 1);
+                        CheckStage();
+                    }
                 });
             }
-        }
-        if (shouldI)
-        {
-            int itemListIndex = UnityEngine.Random.Range(0, 3);
-
-            //butonun üzerine gelme
-            PointerEvents pointerEvents = itemList[itemListIndex].GetComponent<PointerEvents>();
-            pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
-            {
-                handTransform.GetComponent<Image>().sprite = RecipeManager.Instance.GetRecipedBody().sprite;
-                handTransform.GetComponent<Image>().color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedBody().colorHex);
-            };
-
-            itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
-            itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
-            {
-                if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
-                {
-                    StartCoroutine(WheelTime());
-                }
-                Debug.Log("doru");
-                ProgressBarUI.Instance.OneTaskDone();
-                TaskListUI.Instance.SetActiveTick(stage - 1);
-                CheckStage();
-            });
-        }
+        
+        tempList.Clear();
     }
     private void GetLips(LipListSO lipList)
     {
@@ -582,12 +755,23 @@ public class ItemSelectUI : MonoBehaviour
                     {
                         if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
                         {
-                            StartCoroutine(WheelTime());
+                            RefFunction = () =>
+                            {
+                                Debug.Log("yanlýþ");
+                                TaskListUI.Instance.SetActiveXMark(stage - 1);
+                                OnLipColorChanged?.Invoke(this, new OnLipColorChangedEventArgs { str = lipList.list[randomIndex].colorHex });
+                                CheckStage();
+                            };
+                            StartCoroutine(WheelTime(RefFunction));
+
                         }
-                        Debug.Log("yanlýþ");
-                        TaskListUI.Instance.SetActiveXMark(stage - 1);
-                        OnLipColorChanged?.Invoke(this, new OnLipColorChangedEventArgs { str = lipList.list[randomIndex].colorHex });
-                        CheckStage();
+                        else
+                        {
+                            Debug.Log("yanlýþ");
+                            TaskListUI.Instance.SetActiveXMark(stage - 1);
+                            OnLipColorChanged?.Invoke(this, new OnLipColorChangedEventArgs { str = lipList.list[randomIndex].colorHex });
+                            CheckStage();
+                        }
                     });
                     tempList.Add(randomIndex);
                     isAllItemSlotsFilled = true;
@@ -595,83 +779,130 @@ public class ItemSelectUI : MonoBehaviour
             }
         }
 
-        tempList.Clear();
+        
 
         bool shouldI = true;
-        foreach (Transform transform in itemList)
-        {
-            if (RecipeManager.Instance.GetRecipedLips().colorHex == UtilsClass.GetStringFromColor(transform.Find(StringData.IMAGE).GetComponent<Image>().color))
+     
+            foreach (Transform transform in itemList)
             {
-                shouldI = false;
+                if (RecipeManager.Instance.GetRecipedLips().colorHex == UtilsClass.GetStringFromColor(transform.Find(StringData.IMAGE).GetComponent<Image>().color))
+                {
+               
+                    shouldI = false;
 
-                //butona týklama
-                transform.GetComponent<Button>().onClick.RemoveAllListeners();
-                transform.GetComponent<Button>().onClick.AddListener(() =>
+                    //butona týklama
+                    transform.GetComponent<Button>().onClick.RemoveAllListeners();
+                    transform.GetComponent<Button>().onClick.AddListener(() =>
+                    {
+                        if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
+                        {
+                            RefFunction = () =>
+                            {
+                                Debug.Log("doru");
+                                OnLipColorChanged?.Invoke(this, new OnLipColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedLips().colorHex });
+                                ProgressBarUI.Instance.OneTaskDone();
+                                TaskListUI.Instance.SetActiveTick(stage - 1);
+                                CheckStage();
+                            };
+                            StartCoroutine(WheelTime(RefFunction));
+
+                        }
+                        else
+                        {
+                            Debug.Log("doru");
+                            OnLipColorChanged?.Invoke(this, new OnLipColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedLips().colorHex });
+                            ProgressBarUI.Instance.OneTaskDone();
+                            TaskListUI.Instance.SetActiveTick(stage - 1);
+                            CheckStage();
+                        }
+                    });
+                }
+
+            }
+            if (shouldI)
+            {
+                int itemListIndex = UnityEngine.Random.Range(0, 3);
+
+                Image imagee = itemList[itemListIndex].transform.Find(StringData.IMAGE).GetComponent<Image>();
+
+                imagee.sprite = RecipeManager.Instance.GetRecipedLips().sprite;
+                imagee.color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedLips().colorHex);
+
+                //butonun üzerine gelme
+                PointerEvents pointerEvents = itemList[itemListIndex].GetComponent<PointerEvents>();
+                pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
+                {
+                    handTransform.GetComponent<Image>().sprite = RecipeManager.Instance.GetRecipedLips().sprite;
+                    handTransform.GetComponent<Image>().color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedLips().colorHex);
+                };
+
+                itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
+                itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
                 {
                     if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
                     {
-                        StartCoroutine(WheelTime());
+                        RefFunction = () =>
+                        {
+                            Debug.Log("doru");
+                            ProgressBarUI.Instance.OneTaskDone();
+                            TaskListUI.Instance.SetActiveTick(stage - 1);
+                            CheckStage();
+                        };
+                        StartCoroutine(WheelTime(RefFunction));
+
                     }
-                    Debug.Log("doru");
-                    OnLipColorChanged?.Invoke(this, new OnLipColorChangedEventArgs { str = RecipeManager.Instance.GetRecipedLips().colorHex });
-                    ProgressBarUI.Instance.OneTaskDone();
-                    TaskListUI.Instance.SetActiveTick(stage - 1);
-                    CheckStage();
+                    else
+                    {
+                        Debug.Log("doru");
+                        ProgressBarUI.Instance.OneTaskDone();
+                        TaskListUI.Instance.SetActiveTick(stage - 1);
+                        CheckStage();
+                    }
                 });
             }
-        }
-        if (shouldI)
-        {
-            int itemListIndex = UnityEngine.Random.Range(0, 3);
-
-            //butonun üzerine gelme
-            PointerEvents pointerEvents = itemList[itemListIndex].GetComponent<PointerEvents>();
-            pointerEvents.OnMouseEnter += (object sender, EventArgs e) =>
-            {
-                handTransform.GetComponent<Image>().sprite = RecipeManager.Instance.GetRecipedLips().sprite;
-                handTransform.GetComponent<Image>().color = UtilsClass.GetColorFromString(RecipeManager.Instance.GetRecipedLips().colorHex);
-            };
-
-            itemList[itemListIndex].GetComponent<Button>().onClick.RemoveAllListeners();
-            itemList[itemListIndex].GetComponent<Button>().onClick.AddListener(() =>
-            {
-                if (TaskListUI.Instance.CheckHaveQuestionMark(stage - 1))
-                {
-                    StartCoroutine(WheelTime());
-                }
-                Debug.Log("doru");
-                ProgressBarUI.Instance.OneTaskDone();
-                TaskListUI.Instance.SetActiveTick(stage - 1);
-                CheckStage();
-            });
-        }
+        
+        tempList.Clear();
     }
 
-    private IEnumerator WheelTime()
+    private IEnumerator WheelTime(Action action)
     {
         wheelUI.gameObject.SetActive(true);
         AnimationManager.Instance.ActivateWheelUI();
-        yield return new WaitForSeconds(7f);
+        yield return new WaitForSeconds(6.7f);
         wheelUI.gameObject.SetActive(false);
+
+        Action SthImportantFunction = action;
+        SthImportantFunction();
+
     }
     private IEnumerator ThreeStagesCompleted()
     {
         //kazanma ekraný bekleme sekansý
-        if (ProgressBarUI.Instance.GetScore() >= 1)
+
+        if (ProgressBarUI.Instance.GetScore() == 1 && ProgressBarUI.Instance.GetScore() == 2)
         {
+            yield return new WaitForSeconds(4f);
+            winUI.transform.gameObject.SetActive(true);
+        }
+        else if (ProgressBarUI.Instance.GetScore() == 3)
+        {
+            yield return new WaitForSeconds(6f);
             winUI.transform.gameObject.SetActive(true);
         }
         else
         {
+            yield return new WaitForSeconds(4f);
             loseUI.transform.gameObject.SetActive(true);
         }
-        yield return new WaitForSeconds(4f);
+
+
+
 
         winUI.transform.gameObject.SetActive(false);
         loseUI.transform.gameObject.SetActive(false);
 
         currentLevel++;
-        levelText.GetComponent<TextMeshProUGUI>().SetText(currentLevel.ToString());
+        levelText.GetComponent<TextMeshProUGUI>().SetText("LEVEL: "+ currentLevel.ToString());
 
         //progress bar'ý sýfýrla
         ProgressBarUI.Instance.ResetBar();

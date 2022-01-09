@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a5557b206d9958742aaf8d6b8a8466da, type: 3}
-  m_Name: Eye6 1
+  m_Name: Eye7
   m_EditorClassIdentifier: 
-  color: {r: 0.6002471, g: 0.22584549, b: 0.9811321, a: 0}
-  colorHex: 9A3AFB
-  colorName: Purple
+  color: {r: 0.7200535, g: 0.42620146, b: 0.7735849, a: 0}
+  colorHex: B86DC6
+  colorName: Purplee
   sprite: {fileID: 21300000, guid: 47495da3312495741b20b7d883c7fdc6, type: 3}
   taskSprite: {fileID: 21300000, guid: 9eb35ff80ce700a49b5a863a007efc9e, type: 3}
